@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Vladimir Finchuk](https://up.htmlacademy.ru/javascript/18/user/890035).
-* Наставник: `Неизвестно`.
+* Наставник: Антон Попов.
 
 ---
 
