@@ -63,7 +63,7 @@ function getOrders() {
         description: 'Here will be description',
         photos: getRandSliceArray(PHOTOS),
         location: {
-          x: getRandomArbitrary(MAP.offsetLeft, (MAP.offsetLeft + MAP.offsetWidth)),
+          x: getRandomArbitrary(MAP.offsetLeft, MAP.offsetWidth),
           y: getRandomArbitrary(130, 630)
         }
       }
