@@ -12,12 +12,19 @@
   },
   "devDependencies": {
     "eslint": "6.3.0",
-    "eslint-config-htmlacademy": "0.5.2"
+    "eslint-config-htmlacademy": "0.5.2",
+    "path": "^0.12.7",
+    "webpack": "^4.40.2",
+    "webpack-dev-server": "^3.8.1"
   },
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "webpack": "^4.40.2"
+  },
   "scripts": {
-    "test": "eslint js/"
+    "test": "eslint js/",
+    "start": "webpack-dev-server --mode development --open",
+    "build": "webpack --mode production"
   },
   "engines": {
     "node": "8.11"
