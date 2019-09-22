@@ -134,9 +134,10 @@ function mapPinsFragment(cards) {
 /**
  * Build card fragment
  * @param {object} card - card object
- * @return {Node} - card__popup element
+ * @return {Node} - card__popup fragment
  */
 function cardFragment(card) {
+  var fragment = document.createDocumentFragment();
   var template = document.querySelector('#card').content.querySelector('.map__card');
 
   template.querySelector('.popup__title').textContent = card.offer.title;
@@ -157,12 +158,15 @@ function cardFragment(card) {
     template.querySelector('.popup__photos').appendChild(image);
   });
 
-  return template;
+  return fragment.appendChild(template);
 }
 
 MAP.classList.remove('map--faded');
 
 var cards = generateCard(12);
 var mapPinsWrap = document.querySelector('.map__pins');
+var mapFiltersWrap = document.querySelector('.map__filters-container');
 
 mapPinsWrap.appendChild(mapPinsFragment(cards));
+
+mapFiltersWrap.insertAdjacentElement('beforebegin', cardFragment(cards[0]));
