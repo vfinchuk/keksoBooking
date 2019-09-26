@@ -209,9 +209,9 @@ function setFormAdressHandler(evt, el) {
 
 var cards = generateCard(12);
 var mapPinsWrap = document.querySelector('.map__pins');
-var mapFiltersWrap = document.querySelector('.map__filters-container');
+// var mapFiltersWrap = document.querySelector('.map__filters-container');
 var mapPinMain = document.querySelector('.map__pin--main');
-
+cardFragment();
 // mapFiltersWrap.insertAdjacentElement('beforebegin', cardFragment(cards[0]));
 
 /**
