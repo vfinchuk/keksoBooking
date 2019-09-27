@@ -199,7 +199,11 @@ function activePageStateHandler() {
   });
 }
 
-function setFormAdressHandler(evt, el) {
+/**
+ * Include X Y coordinate mapPin in address input field
+ * @param {node} el event target element
+ */
+function setFormAdressHandler(el) {
   var locX = parseInt(el.offsetLeft + (el.clientWidth / 2), 10);
   var locY = parseInt(el.offsetTop + el.clientHeight, 10);
 
@@ -209,9 +213,11 @@ function setFormAdressHandler(evt, el) {
 
 var cards = generateCard(12);
 var mapPinsWrap = document.querySelector('.map__pins');
-// var mapFiltersWrap = document.querySelector('.map__filters-container');
 var mapPinMain = document.querySelector('.map__pin--main');
+
 cardFragment(cards[0]);
+
+// var mapFiltersWrap = document.querySelector('.map__filters-container');
 // mapFiltersWrap.insertAdjacentElement('beforebegin', cardFragment(cards[0]));
 
 /**
@@ -226,7 +232,7 @@ mapPinMain.addEventListener('mousedown', function (evt) {
 
   mapPinsWrap.appendChild(mapPinsFragment(cards));
 
-  setFormAdressHandler(evt, mapPinMain);
+  setFormAdressHandler(mapPinMain);
 });
 
 
@@ -239,38 +245,38 @@ addEventListener('keydown', function (evt) {
   }
 });
 
-
-// FORM fields
-var roomsSelect = FORM.querySelector('select[name="rooms"]');
-var capacitySelect = FORM.querySelector('select[name="capacity"]');
-
-
 /**
  * Validate amount rooms and guests
+ * @param {node} roomsEl rooms select from form
+ * @param {node} capacityEl capacity select from form
  */
-function validateRoomsAndCapacitySelect() {
-  var rooms = parseInt(roomsSelect.options[roomsSelect.selectedIndex].value, 10);
-  var guests = parseInt(capacitySelect.options[capacitySelect.selectedIndex].value, 10);
+function validateRoomsAndCapacitySelect(roomsEl, capacityEl) {
+  var rooms = parseInt(roomsEl.options[roomsEl.selectedIndex].value, 10);
+  var guests = parseInt(capacityEl.options[capacityEl.selectedIndex].value, 10);
 
   if (rooms !== guests) {
     var roomsErrorText = rooms < guests ? 'Комнат меньше чем гостей' : 'Комнат больше чем гостей';
     var capacityErrorText = rooms < guests ? 'Гостей больше чем комнат' : 'Гостей меньше чем комнат';
 
-    roomsSelect.setCustomValidity(roomsErrorText);
-    capacitySelect.setCustomValidity(capacityErrorText);
+    roomsEl.setCustomValidity(roomsErrorText);
+    capacityEl.setCustomValidity(capacityErrorText);
 
   } else {
 
-    roomsSelect.setCustomValidity('');
-    capacitySelect.setCustomValidity('');
+    roomsEl.setCustomValidity('');
+    capacityEl.setCustomValidity('');
 
   }
 }
 
+// FORM fields
+var roomsSelect = FORM.querySelector('select[name="rooms"]');
+var capacitySelect = FORM.querySelector('select[name="capacity"]');
+
 roomsSelect.addEventListener('change', function () {
-  validateRoomsAndCapacitySelect();
+  validateRoomsAndCapacitySelect(roomsSelect, capacitySelect);
 });
 
 capacitySelect.addEventListener('change', function () {
-  validateRoomsAndCapacitySelect();
+  validateRoomsAndCapacitySelect(roomsSelect, capacitySelect);
 });
