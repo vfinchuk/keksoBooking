@@ -39,6 +39,8 @@
     var fragment = document.createDocumentFragment();
     var template = document.querySelector('#card').content.querySelector('.map__card');
 
+    template = template.cloneNode(true);
+
     template.querySelector('.popup__title').textContent = card.offer.title;
     template.querySelector('.popup__text--address').textContent = card.offer.address();
     template.querySelector('.popup__text--price').textContent = card.offer.price + '₽/ночь';
