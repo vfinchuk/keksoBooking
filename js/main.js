@@ -26,6 +26,8 @@ var CARD_DATA = {
 };
 
 var MAP = document.querySelector('.map');
+var FORM = document.querySelector('.notice');
+var MAP_FILTERS = document.querySelector('.map__filters-container');
 
 /**
  * Return random item from array
@@ -161,12 +163,120 @@ function cardFragment(card) {
   return fragment.appendChild(template);
 }
 
-MAP.classList.remove('map--faded');
+/**
+ * Do disable state on site map, card-form and map-filters from
+ */
+function disabledPageStateHandler() {
+  MAP.classList.add('map--faded');
+  FORM.querySelector('.ad-form').classList.add('ad-form--disabled');
+
+  var formFields = FORM.querySelectorAll('input, select, textarea');
+  var filterFields = MAP_FILTERS.querySelectorAll('input, select');
+
+  formFields.forEach(function (el) {
+    el.setAttribute('disabled', 'disabled');
+  });
+  filterFields.forEach(function (el) {
+    el.setAttribute('disabled', 'disabled');
+  });
+}
+
+/**
+ * Do active state on site map, card-form and map-filters from
+ */
+function activePageStateHandler() {
+  MAP.classList.remove('map--faded');
+  FORM.querySelector('.ad-form').classList.remove('ad-form--disabled');
+
+  var formFields = FORM.querySelectorAll('input, select, textarea');
+  var filterFields = MAP_FILTERS.querySelectorAll('input, select');
+
+  formFields.forEach(function (el) {
+    el.removeAttribute('disabled');
+  });
+  filterFields.forEach(function (el) {
+    el.removeAttribute('disabled');
+  });
+}
+
+/**
+ * Include X Y coordinate mapPin in address input field
+ * @param {node} el event target element
+ */
+function setFormAdressHandler(el) {
+  var locX = parseInt(el.offsetLeft + (el.clientWidth / 2), 10);
+  var locY = parseInt(el.offsetTop + el.clientHeight, 10);
+
+  FORM.querySelector('input[name="address"]').value = locX + ' ' + locY;
+}
+
 
 var cards = generateCard(12);
 var mapPinsWrap = document.querySelector('.map__pins');
-var mapFiltersWrap = document.querySelector('.map__filters-container');
+var mapPinMain = document.querySelector('.map__pin--main');
 
-mapPinsWrap.appendChild(mapPinsFragment(cards));
+cardFragment(cards[0]);
 
-mapFiltersWrap.insertAdjacentElement('beforebegin', cardFragment(cards[0]));
+// var mapFiltersWrap = document.querySelector('.map__filters-container');
+// mapFiltersWrap.insertAdjacentElement('beforebegin', cardFragment(cards[0]));
+
+/**
+ * Activate page
+ */
+addEventListener('DOMContentLoaded', disabledPageStateHandler);
+
+mapPinMain.addEventListener('mousedown', function (evt) {
+
+  activePageStateHandler();
+  removeEventListener('DOMContentLoaded', disabledPageStateHandler);
+
+  mapPinsWrap.appendChild(mapPinsFragment(cards));
+
+  setFormAdressHandler(mapPinMain);
+});
+
+
+addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 13) {
+    activePageStateHandler();
+    removeEventListener('DOMContentLoaded', disabledPageStateHandler);
+
+    mapPinsWrap.appendChild(mapPinsFragment(cards));
+  }
+});
+
+/**
+ * Validate amount rooms and guests
+ * @param {node} roomsEl rooms select from form
+ * @param {node} capacityEl capacity select from form
+ */
+function validateRoomsAndCapacitySelect(roomsEl, capacityEl) {
+  var rooms = parseInt(roomsEl.options[roomsEl.selectedIndex].value, 10);
+  var guests = parseInt(capacityEl.options[capacityEl.selectedIndex].value, 10);
+
+  if (rooms !== guests) {
+    var roomsErrorText = rooms < guests ? 'Комнат меньше чем гостей' : 'Комнат больше чем гостей';
+    var capacityErrorText = rooms < guests ? 'Гостей больше чем комнат' : 'Гостей меньше чем комнат';
+
+    roomsEl.setCustomValidity(roomsErrorText);
+    capacityEl.setCustomValidity(capacityErrorText);
+
+  } else {
+
+    roomsEl.setCustomValidity('');
+    capacityEl.setCustomValidity('');
+
+  }
+}
+
+// FORM fields
+var roomsSelect = FORM.querySelector('select[name="rooms"]');
+var capacitySelect = FORM.querySelector('select[name="capacity"]');
+
+roomsSelect.addEventListener('change', function () {
+  validateRoomsAndCapacitySelect(roomsSelect, capacitySelect);
+});
+
+capacitySelect.addEventListener('change', function () {
+  validateRoomsAndCapacitySelect(roomsSelect, capacitySelect);
+});
