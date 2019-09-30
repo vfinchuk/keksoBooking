@@ -21,7 +21,7 @@
           avatar: 'img/avatars/user0' + (i + 1) + '.png'
         },
         offer: {
-          title: window.util.randomArrayItem(CARD_DATA.titles),
+          title: CARD_DATA.titles[i],
           address: function () {
             return this.location.x + ', ' + this.location.y;
           },

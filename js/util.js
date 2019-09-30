@@ -5,6 +5,9 @@
   var BOOK_FORM = document.querySelector('.notice');
   var BOOK_FILTERS = document.querySelector('.map__filters-container');
   var BOOK_CARD = document.querySelector('.map__card');
+
+  var ENTER_BTN = 13;
+  var ESC_BTN = 27;
   /**
    * Return random item from array
    * @param {Array} array - array
@@ -48,6 +51,8 @@
     BOOK_FORM: BOOK_FORM,
     BOOK_FILTERS: BOOK_FILTERS,
     BOOK_CARD: BOOK_CARD,
+    ENTER_BTN: ENTER_BTN,
+    ESC_BTN: ESC_BTN,
 
     randomArrayItem: randomArrayItem,
     randomNumber: randomNumber,

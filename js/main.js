@@ -4,7 +4,7 @@ var MAP = window.util.BOOK_MAP;
 var FORM = window.util.BOOK_FORM;
 var FILTERS = window.util.BOOK_FILTERS;
 
-var mapPinsWrap = MAP.querySelector('.map__pins');
+
 var mapPinMain = MAP.querySelector('.map__pin--main');
 
 var cards = window.generateCard(12);
@@ -50,22 +50,23 @@ function activePageStateHandler() {
 addEventListener('DOMContentLoaded', disabledPageStateHandler);
 
 mapPinMain.addEventListener('mousedown', function () {
-
   activePageStateHandler();
   removeEventListener('DOMContentLoaded', disabledPageStateHandler);
 
-  mapPinsWrap.appendChild(window.fragments.mapPinsFragment(cards));
 
   window.cardForm.setFormAddressHandler(mapPinMain);
+
+
+  window.map.renderMapPins();
+
+  window.map.togglePopupCardOrder();
 });
 
 
 addEventListener('keydown', function (evt) {
-  if (evt.keyCode === 13) {
+  if (evt.keyCode === window.util.ENTER_BTN) {
     activePageStateHandler();
     removeEventListener('DOMContentLoaded', disabledPageStateHandler);
-
-    mapPinsWrap.appendChild(window.fragments.mapPinsFragment(cards));
   }
 });
 
