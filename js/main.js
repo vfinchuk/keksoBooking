@@ -4,10 +4,7 @@ var MAP = window.util.BOOK_MAP;
 var FORM = window.util.BOOK_FORM;
 var FILTERS = window.util.BOOK_FILTERS;
 
-
 var mapPinMain = MAP.querySelector('.map__pin--main');
-
-var cards = window.generateCard(12);
 
 /**
  * Do disable state on site map, card-form and map-filters from
@@ -46,19 +43,19 @@ function activePageStateHandler() {
 }
 
 
-/* Activate page */
 addEventListener('DOMContentLoaded', disabledPageStateHandler);
 
 mapPinMain.addEventListener('mousedown', function () {
+
+  /* activate page */
   activePageStateHandler();
   removeEventListener('DOMContentLoaded', disabledPageStateHandler);
 
-
+  /* card form */
   window.cardForm.setFormAddressHandler(mapPinMain);
 
-
+  /* map pin */
   window.map.renderMapPins();
-
   window.map.togglePopupCardOrder();
 });
 
