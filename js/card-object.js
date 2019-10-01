@@ -2,8 +2,8 @@
 
 (function () {
 
-  var CARD_DATA = window.CARD_DATA;
-  var MAP = window.util.BOOK_MAP;
+  var cardData = window.cardData;
+  var mapNode = window.util.mapNode;
 
   /**
    * Generate array with card objects
@@ -12,7 +12,7 @@
    */
   function generateCard(amount) {
     var cards = [];
-    amount = amount < CARD_DATA.titles.length ? amount : CARD_DATA.titles.length;
+    amount = amount < cardData.titles.length ? amount : cardData.titles.length;
 
     for (var i = 0; i < amount; i++) {
 
@@ -21,21 +21,21 @@
           avatar: 'img/avatars/user0' + (i + 1) + '.png'
         },
         offer: {
-          title: CARD_DATA.titles[i],
+          title: cardData.titles[i],
           address: function () {
             return this.location.x + ', ' + this.location.y;
           },
           price: window.util.randomNumber(300, 1000),
-          type: window.util.randomArrayItem(CARD_DATA.apartments),
+          type: window.util.randomArrayItem(cardData.apartments),
           rooms: window.util.randomNumber(1, 5),
           guests: window.util.randomNumber(1, 5),
-          checkin: window.util.randomArrayItem(CARD_DATA.checkIns),
-          checkout: window.util.randomArrayItem(CARD_DATA.checkOuts()),
-          features: window.util.randomItemsLengthArray(CARD_DATA.features),
+          checkin: window.util.randomArrayItem(cardData.checkIns),
+          checkout: window.util.randomArrayItem(cardData.checkOuts()),
+          features: window.util.randomItemsLengthArray(cardData.features),
           description: 'Here will be description',
-          photos: window.util.randomItemsLengthArray(CARD_DATA.photos),
+          photos: window.util.randomItemsLengthArray(cardData.photos),
           location: {
-            x: window.util.randomNumber(MAP.offsetLeft, MAP.offsetWidth),
+            x: window.util.randomNumber(mapNode.offsetLeft, mapNode.offsetWidth),
             y: window.util.randomNumber(130, 630)
           }
         }

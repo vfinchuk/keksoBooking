@@ -1,13 +1,14 @@
 'use strict';
 (function () {
 
-  var BOOK_MAP = document.querySelector('.map');
-  var BOOK_FORM = document.querySelector('.notice');
-  var BOOK_FILTERS = document.querySelector('.map__filters-container');
-  var BOOK_CARD = document.querySelector('.map__card');
+  var enterBtnKey = 13;
+  var escBtnKey = 27;
 
-  var ENTER_BTN = 13;
-  var ESC_BTN = 27;
+  var mapNode = document.querySelector('.map');
+  var formNode = document.querySelector('.notice');
+  var filtersNode = document.querySelector('.map__filters-container');
+  var cardNode = document.querySelector('.map__card');
+
   /**
    * Return random item from array
    * @param {Array} array - array
@@ -47,12 +48,12 @@
 
 
   window.util = {
-    BOOK_MAP: BOOK_MAP,
-    BOOK_FORM: BOOK_FORM,
-    BOOK_FILTERS: BOOK_FILTERS,
-    BOOK_CARD: BOOK_CARD,
-    ENTER_BTN: ENTER_BTN,
-    ESC_BTN: ESC_BTN,
+    mapNode: mapNode,
+    formNode: formNode,
+    filtersNode: filtersNode,
+    cardNode: cardNode,
+    enterBtnKey: enterBtnKey,
+    escBtnKey: escBtnKey,
 
     randomArrayItem: randomArrayItem,
     randomNumber: randomNumber,

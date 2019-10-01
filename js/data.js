@@ -2,7 +2,7 @@
 
 (function () {
 
-  var CARD_DATA = {
+  var cardData = {
     amount: 8,
     titles: [
       'Люкс аппортаменты',
@@ -27,6 +27,6 @@
     ]
   };
 
-  window.CARD_DATA = CARD_DATA;
+  window.cardData = cardData;
 
 })();

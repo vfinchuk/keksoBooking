@@ -1,20 +1,20 @@
 'use strict';
 
-var MAP = window.util.BOOK_MAP;
-var FORM = window.util.BOOK_FORM;
-var FILTERS = window.util.BOOK_FILTERS;
+var mapNode = window.util.mapNode;
+var formNode = window.util.formNode;
+var filtersNode = window.util.filtersNode;
 
-var mapPinMain = MAP.querySelector('.map__pin--main');
+var mapPinMain = mapNode.querySelector('.map__pin--main');
 
 /**
  * Do disable state on site map, card-form and map-filters from
  */
 function disabledPageStateHandler() {
-  MAP.classList.add('map--faded');
-  FORM.querySelector('.ad-form').classList.add('ad-form--disabled');
+  mapNode.classList.add('map--faded');
+  formNode.querySelector('.ad-form').classList.add('ad-form--disabled');
 
-  var formFields = FORM.querySelectorAll('input, select, textarea');
-  var filterFields = FILTERS.querySelectorAll('input, select');
+  var formFields = formNode.querySelectorAll('input, select, textarea');
+  var filterFields = formNode.querySelectorAll('input, select');
 
   formFields.forEach(function (el) {
     el.setAttribute('disabled', 'disabled');
@@ -28,11 +28,11 @@ function disabledPageStateHandler() {
  * Do active state on site map, card-form and map-filters from
  */
 function activePageStateHandler() {
-  MAP.classList.remove('map--faded');
-  FORM.querySelector('.ad-form').classList.remove('ad-form--disabled');
+  mapNode.classList.remove('map--faded');
+  formNode.querySelector('.ad-form').classList.remove('ad-form--disabled');
 
-  var formFields = FORM.querySelectorAll('input, select, textarea');
-  var filterFields = FILTERS.querySelectorAll('input, select');
+  var formFields = formNode.querySelectorAll('input, select, textarea');
+  var filterFields = filtersNode.querySelectorAll('input, select');
 
   formFields.forEach(function (el) {
     el.removeAttribute('disabled');
@@ -43,13 +43,11 @@ function activePageStateHandler() {
 }
 
 
-addEventListener('DOMContentLoaded', disabledPageStateHandler);
+disabledPageStateHandler();
 
 mapPinMain.addEventListener('mousedown', function () {
-
   /* activate page */
   activePageStateHandler();
-  removeEventListener('DOMContentLoaded', disabledPageStateHandler);
 
   /* card form */
   window.cardForm.setFormAddressHandler(mapPinMain);
@@ -63,7 +61,6 @@ mapPinMain.addEventListener('mousedown', function () {
 addEventListener('keydown', function (evt) {
   if (evt.keyCode === window.util.ENTER_BTN) {
     activePageStateHandler();
-    removeEventListener('DOMContentLoaded', disabledPageStateHandler);
   }
 });
 

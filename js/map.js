@@ -2,10 +2,9 @@
 
 (function () {
 
-  var MAP = window.util.BOOK_MAP;
-
-  var mapPinsWrap = MAP.querySelector('.map__pins');
-  var mapFiltersWrap = window.util.BOOK_MAP.querySelector('.map__filters-container');
+  var mapNode = window.util.mapNode;
+  var mapPinsWrap = mapNode.querySelector('.map__pins');
+  var mapFiltersWrap = window.util.mapNode.querySelector('.map__filters-container');
   var cards = window.generateCard(12);
 
   /**
@@ -21,7 +20,7 @@
    * Toggle for show popup card
    */
   function togglePopupCardOrder() {
-    var mapPins = MAP.querySelectorAll('.map__pin');
+    var mapPins = mapNode.querySelectorAll('.map__pin');
 
     mapPins.forEach(function (pin) {
 
@@ -51,7 +50,7 @@
    * Event close card__popup by esc button
    */
   addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.util.ESC_BTN && document.querySelector('.map__card')) {
+    if (evt.keyCode === window.util.escBtnKey && document.querySelector('.map__card')) {
       __closeMapCardHandler();
     }
   });

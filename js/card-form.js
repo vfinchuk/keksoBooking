@@ -2,10 +2,10 @@
 
 (function () {
 
-  var FORM = window.util.BOOK_FORM;
+  var formNode = window.util.formNode;
 
-  var roomsSelect = FORM.querySelector('select[name="rooms"]');
-  var capacitySelect = FORM.querySelector('select[name="capacity"]');
+  var roomsSelect = formNode.querySelector('select[name="rooms"]');
+  var capacitySelect = formNode.querySelector('select[name="capacity"]');
 
   /**
    * Validate amount rooms and guests
@@ -31,6 +31,19 @@
     }
   }
 
+  // function __validateTitle() {
+  //
+  // };
+
+  // function __validatePriceByNight() {
+  //
+  // };
+  //
+  // function __validateCheckInCheckOut() {
+  //
+  // };
+
+
   /**
    * Include X Y coordinate mapPin in address input field
    * @param {node} el event target element
@@ -39,7 +52,7 @@
     var locX = parseInt(el.offsetLeft + (el.clientWidth / 2), 10);
     var locY = parseInt(el.offsetTop + el.clientHeight, 10);
 
-    FORM.querySelector('input[name="address"]').value = locX + ' ' + locY;
+    formNode.querySelector('input[name="address"]').value = locX + ' ' + locY;
   }
 
 
@@ -55,7 +68,7 @@
 
   window.cardForm = {
     setFormAddressHandler: setFormAddressHandler
-  }
+  };
 
   // ...
 })();
