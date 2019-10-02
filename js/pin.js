@@ -4,6 +4,8 @@
 
   var mapNode = window.util.mapNode;
   var mapPinsWrap = mapNode.querySelector('.map__pins');
+
+
   /**
    * Build mapPins fragment array
    * @param {array} cards - cards array
@@ -32,9 +34,7 @@
     return fragment;
   }
 
-  /**
-   * Render map pins fragment
-   */
+  /* Render map pins fragment */
   function renderMapPins() {
     mapPinsWrap.appendChild(__mapPinsFragment(window.card.generateCard(8)));
   }
