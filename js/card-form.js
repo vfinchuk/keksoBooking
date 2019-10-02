@@ -34,8 +34,8 @@
 
   /**
    * Validate amount rooms and guests
-   * @param {node} roomsNode rooms select from form
-   * @param {node} capacityNode capacity select from form
+   * @param {node} roomsNode - rooms select from form
+   * @param {node} capacityNode - capacity select from form
    * @return {boolean} true | false
    * @private
    */
@@ -64,6 +64,13 @@
     return false;
   }
 
+  /**
+   * Validate order title input
+   * @param {node} evt - input event
+   * @param {node} titleNode - form title input
+   * @return {boolean}
+   * @private
+   */
   function __validateTitle(evt, titleNode) {
     var titleLength = evt.target.value.length;
 
@@ -85,6 +92,13 @@
     return false;
   }
 
+  /**
+   * Validate order price input
+   * @param {node} evt - input event
+   * @param {node} priceNode - form price input
+   * @return {*} if price available return price sum or false
+   * @private
+   */
   function __validatePrice(evt, priceNode) {
     var price = parseInt(evt.target.value, 10);
 
@@ -102,7 +116,13 @@
     return false;
   }
 
-
+  /**
+   * Validate type apartment select
+   * @param {int} price - price by night
+   * @param {node} typeNode - apartment type select
+   * @return {boolean}
+   * @private
+   */
   function __validateTypeApartment(price, typeNode) {
 
     switch (true) {
@@ -130,7 +150,6 @@
 
     return false;
   }
-
 
   /**
    * Include X Y coordinate mapPin in address input field
@@ -166,7 +185,17 @@
   });
 
   /* Validate checkIn and checkOut selects */
+  checkInSelect.addEventListener('change', function (evt) {
+    __setSelectedOption(checkOutSelect, evt.target.value);
+    evt.target.style.backgroundColor = window.util.formValidColor;
+    checkOutSelect.style.backgroundColor = window.util.formValidColor;
+  });
 
+  checkOutSelect.addEventListener('change', function (evt) {
+    __setSelectedOption(checkInSelect, evt.target.value);
+    evt.target.style.backgroundColor = window.util.formValidColor;
+    checkInSelect.style.backgroundColor = window.util.formValidColor;
+  });
 
 
   window.cardForm = {
@@ -174,6 +203,7 @@
   };
 
   // ...
+
 })();
 
 
