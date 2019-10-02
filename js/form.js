@@ -198,7 +198,7 @@
   });
 
 
-  window.cardForm = {
+  window.form = {
     setFormAddressHandler: setFormAddressHandler
   };
 

@@ -46,15 +46,18 @@ function activePageStateHandler() {
 disabledPageStateHandler();
 
 mapPinMain.addEventListener('mousedown', function () {
+
   /* activate page */
   activePageStateHandler();
 
   /* card form */
-  window.cardForm.setFormAddressHandler(mapPinMain);
+  window.form.setFormAddressHandler(mapPinMain);
 
   /* map pin */
-  window.map.renderMapPins();
-  window.map.togglePopupCardOrder();
+  window.pin.renderMapPins();
+
+  /* map card */
+  window.card.togglePopupCardOrder();
 });
 
 

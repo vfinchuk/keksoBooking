@@ -5,7 +5,7 @@
   var mapNode = window.util.mapNode;
   var mapPinsWrap = mapNode.querySelector('.map__pins');
   var mapFiltersWrap = window.util.mapNode.querySelector('.map__filters-container');
-  var cards = window.generateCard(12);
+  var cards = window.card.generateCard(12);
 
   /**
    * Handler for close card popup
@@ -37,7 +37,7 @@
 
           for (var i = 0; i < cards.length; i++) {
             if (pinTitle === cards[i].offer.title) {
-              mapFiltersWrap.insertAdjacentElement('beforebegin', window.fragments.cardFragment(cards[i]));
+              mapFiltersWrap.insertAdjacentElement('beforebegin', window.card.cardFragment(cards[i]));
             }
           }
           document.querySelector('.popup__close').addEventListener('click', __closeMapCardHandler);
@@ -59,7 +59,7 @@
    * Render map pins fragment
    */
   function renderMapPins() {
-    mapPinsWrap.appendChild(window.fragments.mapPinsFragment(cards));
+    mapPinsWrap.appendChild(window.pin.mapPinsFragment(cards));
   }
 
 
