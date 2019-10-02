@@ -4,6 +4,9 @@
   var enterBtnKey = 13;
   var escBtnKey = 27;
 
+  var formInvalidColor = 'rgba(255, 0, 0, 0.2)';
+  var formValidColor = 'rgba(0, 255, 0, 0.2)';
+
   var mapNode = document.querySelector('.map');
   var formNode = document.querySelector('.notice');
   var filtersNode = document.querySelector('.map__filters-container');
@@ -54,6 +57,9 @@
     cardNode: cardNode,
     enterBtnKey: enterBtnKey,
     escBtnKey: escBtnKey,
+
+    formInvalidColor: formInvalidColor,
+    formValidColor: formValidColor,
 
     randomArrayItem: randomArrayItem,
     randomNumber: randomNumber,

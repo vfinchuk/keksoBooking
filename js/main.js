@@ -17,10 +17,10 @@ function disabledPageStateHandler() {
   var filterFields = formNode.querySelectorAll('input, select');
 
   formFields.forEach(function (el) {
-    el.setAttribute('disabled', 'disabled');
+    el.setAttribute('disabled', '');
   });
   filterFields.forEach(function (el) {
-    el.setAttribute('disabled', 'disabled');
+    el.setAttribute('disabled', '');
   });
 }
 

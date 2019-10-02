@@ -3,45 +3,133 @@
 (function () {
 
   var formNode = window.util.formNode;
-
   var roomsSelect = formNode.querySelector('select[name="rooms"]');
   var capacitySelect = formNode.querySelector('select[name="capacity"]');
+  var titleInput = formNode.querySelector('input[name="title"]');
+  var priceInput = formNode.querySelector('input[name="price"]');
+  var typeApartmentSelect = formNode.querySelector('select[name="type"]');
+  var checkInSelect = formNode.querySelector('select[name="timein"]');
+  var checkOutSelect = formNode.querySelector('select[name="timeout"]');
+
+
+  var timeout = null;
+
+  function __setTimeoutInputHandler(evt, callback) {
+    if (timeout !== null) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(function () {
+      callback(evt, evt.target);
+    }, 250);
+  }
+
+  function __setSelectedOption(selectNode, optionVal) {
+    selectNode.querySelectorAll('option').forEach(function (el) {
+      el.removeAttribute('selected');
+      if (el.getAttribute('value') === optionVal) {
+        el.setAttribute('selected', '');
+      }
+    });
+  }
 
   /**
    * Validate amount rooms and guests
-   * @param {node} roomsEl rooms select from form
-   * @param {node} capacityEl capacity select from form
+   * @param {node} roomsNode rooms select from form
+   * @param {node} capacityNode capacity select from form
+   * @return {boolean} true | false
+   * @private
    */
-  function __validateRoomsAndCapacitySelect(roomsEl, capacityEl) {
-    var rooms = parseInt(roomsEl.options[roomsEl.selectedIndex].value, 10);
-    var guests = parseInt(capacityEl.options[capacityEl.selectedIndex].value, 10);
+  function __validateRoomsAndCapacityHandler(roomsNode, capacityNode) {
+    var rooms = parseInt(roomsNode.options[roomsNode.selectedIndex].value, 10);
+    var guests = parseInt(capacityNode.options[capacityNode.selectedIndex].value, 10);
 
     if (rooms !== guests) {
       var roomsErrorText = rooms < guests ? 'Комнат меньше чем гостей' : 'Комнат больше чем гостей';
       var capacityErrorText = rooms < guests ? 'Гостей больше чем комнат' : 'Гостей меньше чем комнат';
 
-      roomsEl.setCustomValidity(roomsErrorText);
-      capacityEl.setCustomValidity(capacityErrorText);
+      roomsNode.setCustomValidity(roomsErrorText);
+      capacityNode.setCustomValidity(capacityErrorText);
+      roomsNode.style.backgroundColor = window.util.formInvalidColor;
+      capacityNode.style.backgroundColor = window.util.formInvalidColor;
 
     } else {
 
-      roomsEl.setCustomValidity('');
-      capacityEl.setCustomValidity('');
-
+      roomsNode.setCustomValidity('');
+      capacityNode.setCustomValidity('');
+      roomsNode.style.backgroundColor = window.util.formValidColor;
+      capacityNode.style.backgroundColor = window.util.formValidColor;
+      return true;
     }
+
+    return false;
   }
 
-  // function __validateTitle() {
-  //
-  // };
+  function __validateTitle(evt, titleNode) {
+    var titleLength = evt.target.value.length;
 
-  // function __validatePriceByNight() {
-  //
-  // };
-  //
-  // function __validateCheckInCheckOut() {
-  //
-  // };
+    if (titleLength === 0) {
+      titleNode.setCustomValidity('Поле обязательное для заполнения');
+      titleNode.style.backgroundColor = window.util.formInvalidColor;
+    } else if (titleLength > 100) {
+      titleNode.setCustomValidity('Заголовок обьявления слишком длинный');
+      titleNode.style.backgroundColor = window.util.formInvalidColor;
+    } else if (titleLength < 30) {
+      titleNode.setCustomValidity('Заголовок обьявления слишком короткий');
+      titleNode.style.backgroundColor = window.util.formInvalidColor;
+    } else {
+      titleNode.setCustomValidity('');
+      titleNode.style.backgroundColor = window.util.formValidColor;
+      return true;
+    }
+
+    return false;
+  }
+
+  function __validatePrice(evt, priceNode) {
+    var price = parseInt(evt.target.value, 10);
+
+    if (price > 1000000) {
+      priceNode.setCustomValidity('Вы привысили максимальное значение 1.000.000');
+      priceNode.style.backgroundColor = window.util.formInvalidColor;
+    } else if (price <= 0) {
+      priceNode.setCustomValidity('Минимальная цена не божет быть меньше 1');
+      priceNode.style.backgroundColor = window.util.formInvalidColor;
+    } else {
+      priceNode.setCustomValidity('');
+      priceNode.style.backgroundColor = window.util.formValidColor;
+      return price;
+    }
+    return false;
+  }
+
+
+  function __validateTypeApartment(price, typeNode) {
+
+    switch (true) {
+      case price >= 0 && price < 1000:
+        __setSelectedOption(typeNode, 'bungalo');
+        typeNode.style.backgroundColor = window.util.formValidColor;
+        break;
+      case price >= 1000 && price < 5000:
+        __setSelectedOption(typeNode, 'flat');
+        typeNode.style.backgroundColor = window.util.formValidColor;
+        break;
+      case price >= 5000 && price < 10000:
+        __setSelectedOption(typeNode, 'house');
+        typeNode.style.backgroundColor = window.util.formValidColor;
+        break;
+      case price >= 10000:
+        __setSelectedOption(typeNode, 'palace');
+        typeNode.style.backgroundColor = window.util.formValidColor;
+        break;
+    }
+
+    if (!price) {
+      typeNode.style.backgroundColor = window.util.formInvalidColor;
+    }
+
+    return false;
+  }
 
 
   /**
@@ -56,14 +144,29 @@
   }
 
 
-  /* Validation rooms and guests amount */
+  /* Validate rooms and guests amount */
   roomsSelect.addEventListener('change', function () {
-    __validateRoomsAndCapacitySelect(roomsSelect, capacitySelect);
+    __validateRoomsAndCapacityHandler(roomsSelect, capacitySelect);
   });
 
   capacitySelect.addEventListener('change', function () {
-    __validateRoomsAndCapacitySelect(roomsSelect, capacitySelect);
+    __validateRoomsAndCapacityHandler(roomsSelect, capacitySelect);
   });
+
+  /* Validate title */
+  titleInput.addEventListener('input', function (evt) {
+    __setTimeoutInputHandler(evt, __validateTitle);
+  });
+
+  /* Validate price and type apartment*/
+  priceInput.addEventListener('input', function (evt) {
+    var price = __validatePrice(evt, priceInput);
+    __setTimeoutInputHandler(evt, __validatePrice);
+    __validateTypeApartment(price, typeApartmentSelect);
+  });
+
+  /* Validate checkIn and checkOut selects */
+
 
 
   window.cardForm = {
@@ -72,3 +175,5 @@
 
   // ...
 })();
+
+
