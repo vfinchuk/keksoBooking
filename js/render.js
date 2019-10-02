@@ -58,7 +58,8 @@ mapPinMain.addEventListener('mousedown', function () {
 
   /* map card */
   window.card.togglePopupCardOrder();
-});
+
+}, {once: true});
 
 
 addEventListener('keydown', function (evt) {
