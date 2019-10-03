@@ -61,6 +61,13 @@ mapPinMain.addEventListener('mousedown', function () {
 
 }, {once: true});
 
+/* update form address if mapPinMain on move */
+mapPinMain.addEventListener('mousedown', function () {
+  window.form.setFormAddressHandler(mapPinMain);
+  mapPinMain.addEventListener('mousemove', function () {
+    window.form.setFormAddressHandler(mapPinMain);
+  });
+});
 
 addEventListener('keydown', function (evt) {
   if (evt.keyCode === window.util.ENTER_BTN) {
