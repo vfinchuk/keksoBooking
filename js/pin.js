@@ -42,7 +42,6 @@
     nodeElement.addEventListener('mousedown', function (evt) {
       evt.preventDefault();
 
-
       function __mouseMoveHandler(moveEvt) {
         moveEvt.preventDefault();
 
@@ -54,23 +53,28 @@
           y: moveEvt.clientY - mapNode.offsetTop - elHeightOffset
         };
 
+        var mapCoord = {
+          left: mapNode.offsetLeft + elWidthOffset,
+          right: mapNode.offsetLeft + mapNode.clientWidth - elWidthOffset,
+          top: mapNode.offsetTop + elHeightOffset,
+          bottom: (mapNode.offsetTop + mapNode.clientHeight) - mapFiltersWrap.clientHeight,
+        };
+
         /* moving on map by x-coordinate */
-        if (
-          (moveEvt.clientX < (mapNode.offsetLeft + elWidthOffset)) ||
-          (moveEvt.clientX > (mapNode.offsetLeft + mapNode.clientWidth - elWidthOffset))
-        ) {
-          nodeElement.style.left = (mapNode.offsetLeft + elWidthOffset);
+        if ((moveEvt.clientX < mapCoord.left) || (moveEvt.clientX > mapCoord.right)) {
+          nodeElement.style.left = mapCoord.left;
         } else {
           nodeElement.style.left = shift.x + 'px';
         }
 
+
         /* moving on map by y-coordinate */
-        if (moveEvt.clientY < (mapNode.offsetTop + elHeightOffset)) {
-          nodeElement.style.top = mapNode.offsetTop + mapNode.scrollTop + 'px';
-        } else if (moveEvt.clientY > (mapNode.offsetTop + mapNode.clientHeight - mapFiltersWrap.clientHeight)) {
-          nodeElement.style.top = (mapNode.offsetTop + mapNode.clientHeight - mapFiltersWrap.clientHeight) - nodeElement.clientHeight + mapNode.scrollTop + 'px';
+        if (moveEvt.clientY < mapCoord.top) {
+          nodeElement.style.top = mapNode.offsetTop + window.scrollY + 'px';
+        } else if (moveEvt.clientY > mapCoord.bottom - window.scrollY) {
+          nodeElement.style.top = mapCoord.bottom - nodeElement.clientHeight + 'px';
         } else {
-          nodeElement.style.top = shift.y + mapNode.scrollTop + 'px';
+          nodeElement.style.top = shift.y + window.scrollY + 'px';
         }
 
       }
@@ -88,6 +92,7 @@
 
 
   movingElementOnMap(mapPinMain);
+
 
   /* Render map pins fragment */
   function renderMapPins() {
