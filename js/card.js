@@ -91,7 +91,7 @@
   /**
    * Toggle for show popup card
    */
-  function togglePopupCardOrder() {
+  function togglePopupCard() {
     var mapPins = mapNode.querySelectorAll('.map__pin');
 
     mapPins.forEach(function (pin) {
@@ -121,7 +121,7 @@
 
   window.card = {
     generateCard: generateCard,
-    togglePopupCardOrder: togglePopupCardOrder
+    togglePopupCard: togglePopupCard
   };
 
   // ...

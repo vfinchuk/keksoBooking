@@ -19,7 +19,7 @@
   /**
    * Toggle for show popup card
    */
-  function togglePopupCardOrder() {
+  function togglePopupCard() {
     var mapPins = mapNode.querySelectorAll('.map__pin');
 
     mapPins.forEach(function (pin) {
@@ -64,7 +64,7 @@
 
 
   window.map = {
-    togglePopupCardOrder: togglePopupCardOrder,
+    togglePopupCard: togglePopupCard,
     renderMapPins: renderMapPins
   };
 

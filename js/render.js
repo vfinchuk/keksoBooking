@@ -57,7 +57,7 @@ mapPinMain.addEventListener('mousedown', function () {
   window.pin.renderMapPins();
 
   /* map card */
-  window.card.togglePopupCardOrder();
+  window.card.togglePopupCard();
 
 }, {once: true});
 
