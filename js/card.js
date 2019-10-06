@@ -2,11 +2,8 @@
 
 (function () {
 
-  var cardData = window.cardData;
   var mapNode = window.util.mapNode;
   var mapFiltersWrap = window.util.mapNode.querySelector('.map__filters-container');
-  var cards = generateCard(12);
-
 
   /**
    * Build card fragment
@@ -20,7 +17,7 @@
     template = template.cloneNode(true);
 
     template.querySelector('.popup__title').textContent = card.offer.title;
-    template.querySelector('.popup__text--address').textContent = card.offer.address();
+    template.querySelector('.popup__text--address').textContent = card.offer.address;
     template.querySelector('.popup__text--price').textContent = card.offer.price + '₽/ночь';
     template.querySelector('.popup__type').textContent = card.offer.type;
     template.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests + ' гостей';
@@ -41,46 +38,6 @@
   }
 
   /**
-   * Generate array with card objects
-   * @param {Number} amount - cards amount
-   * @return {Array} - cards array
-   */
-  function generateCard(amount) {
-    var cardsArr = [];
-    amount = amount < cardData.titles.length ? amount : cardData.titles.length;
-
-    for (var i = 0; i < amount; i++) {
-
-      cardsArr[i] = {
-        author: {
-          avatar: 'img/avatars/user0' + (i + 1) + '.png'
-        },
-        offer: {
-          title: cardData.titles[i],
-          address: function () {
-            return this.location.x + ', ' + this.location.y;
-          },
-          price: window.util.randomNumber(300, 1000),
-          type: window.util.randomArrayItem(cardData.apartments),
-          rooms: window.util.randomNumber(1, 5),
-          guests: window.util.randomNumber(1, 5),
-          checkin: window.util.randomArrayItem(cardData.checkIns),
-          checkout: window.util.randomArrayItem(cardData.checkOuts()),
-          features: window.util.randomItemsLengthArray(cardData.features),
-          description: 'Here will be description',
-          photos: window.util.randomItemsLengthArray(cardData.photos),
-          location: {
-            x: window.util.randomNumber(mapNode.offsetLeft, mapNode.offsetWidth),
-            y: window.util.randomNumber(130, 630)
-          }
-        }
-      };
-    }
-    return cardsArr;
-  }
-
-
-  /**
    * Handler for close card popup
    * @private
    */
@@ -90,8 +47,9 @@
 
   /**
    * Toggle for show popup card
+   * @param {array} cards - card objects array
    */
-  function togglePopupCard() {
+  function togglePopupCard(cards) {
     var mapPins = mapNode.querySelectorAll('.map__pin');
 
     mapPins.forEach(function (pin) {
@@ -120,7 +78,6 @@
 
 
   window.card = {
-    generateCard: generateCard,
     togglePopupCard: togglePopupCard
   };
 

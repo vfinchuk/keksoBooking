@@ -3,7 +3,6 @@
 (function () {
 
   var mapNode = window.util.mapNode;
-  var mapPinsWrap = mapNode.querySelector('.map__pins');
   var mapFiltersWrap = mapNode.querySelector('.map__filters-container');
   var mapPinMain = mapNode.querySelector('.map__pin--main');
 
@@ -12,7 +11,7 @@
    * @param {array} cards - cards array
    * @return {DocumentFragment} - collection of mapPin elements
    */
-  function __mapPinsFragment(cards) {
+  function mapPinsFragment(cards) {
     var fragment = document.createDocumentFragment();
     var template = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -24,8 +23,8 @@
       pinElement.querySelector('img').setAttribute('alt', card.offer.title);
 
 
-      var locX = card.offer.location.x - pinElementImage.getAttribute('width');
-      var locY = card.offer.location.y - pinElementImage.getAttribute('height');
+      var locX = card.location.x - pinElementImage.getAttribute('width');
+      var locY = card.location.y - pinElementImage.getAttribute('height');
       pinElement.style.left = locX + 'px';
       pinElement.style.top = locY + 'px';
 
@@ -95,12 +94,9 @@
 
 
   /* Render map pins fragment */
-  function renderMapPins() {
-    mapPinsWrap.appendChild(__mapPinsFragment(window.card.generateCard(8)));
-  }
 
   window.pin = {
-    renderMapPins: renderMapPins
+    mapPinsFragment: mapPinsFragment
   };
 
   // ...

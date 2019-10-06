@@ -49,6 +49,16 @@
     return result;
   }
 
+  function errorMassage(massege) {
+    var fragment = document.createDocumentFragment();
+    var template = document.querySelector('#error').content.querySelector('.error');
+
+    template = template.cloneNode(true);
+
+    template.querySelector('.error__message').textContent = massege;
+
+    return fragment.appendChild(template);
+  }
 
   window.util = {
     mapNode: mapNode,
@@ -63,7 +73,11 @@
 
     randomArrayItem: randomArrayItem,
     randomNumber: randomNumber,
-    randomItemsLengthArray: randomItemsLengthArray
+    randomItemsLengthArray: randomItemsLengthArray,
+
+    fragments: {
+      errorMassage: errorMassage
+    }
   };
 
   // ...
