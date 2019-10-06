@@ -57,20 +57,14 @@
   disabledPageStateHandler();
 
   function ordersDataSuccessHandler(data) {
-
     /* activate page */
     activePageStateHandler();
-
     /* card form */
     window.form.setFormAddressHandler(mapPinMain);
-
     /* map pin */
     mapPinsWrap.appendChild(window.pin.mapPinsFragment(data));
-
     /* map card */
     window.card.togglePopupCard(data);
-
-
     /* update form address if mapPinMain on move */
     mapPinMain.addEventListener('mousedown', function () {
       window.form.setFormAddressHandler(mapPinMain);
@@ -88,8 +82,16 @@
 
 
   mapPinMain.addEventListener('mousedown', function () {
+
     window.dataLoad(ordersData, ordersDataSuccessHandler, ordersDataErrorHandler);
+
   }, {once: true});
 
+
+  addEventListener('keydown', function (evt) {
+    if (evt.keyCode === window.util.enterBtnKey) {
+      window.dataLoad(ordersData, ordersDataSuccessHandler, ordersDataErrorHandler);
+    }
+  });
 
 })();
