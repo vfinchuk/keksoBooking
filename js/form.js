@@ -2,6 +2,8 @@
 
 (function () {
 
+
+
   var formNode = window.util.formNode;
   var roomsSelect = formNode.querySelector('select[name="rooms"]');
   var capacitySelect = formNode.querySelector('select[name="capacity"]');
@@ -10,7 +12,6 @@
   var typeApartmentSelect = formNode.querySelector('select[name="type"]');
   var checkInSelect = formNode.querySelector('select[name="timein"]');
   var checkOutSelect = formNode.querySelector('select[name="timeout"]');
-
 
   var timeout = null;
 
@@ -196,6 +197,7 @@
     evt.target.style.backgroundColor = window.util.formValidColor;
     checkInSelect.style.backgroundColor = window.util.formValidColor;
   });
+
 
 
   window.form = {

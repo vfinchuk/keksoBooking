@@ -41,7 +41,7 @@
    * Handler for close card popup
    * @private
    */
-  function __closeMapCardHandler() {
+  function closePopupCard() {
     document.querySelector('.map__card').remove();
   }
 
@@ -59,8 +59,8 @@
 
           var mapCard = document.querySelector('.map__card');
           if (mapCard) {
-            document.querySelector('.popup__close').removeEventListener('click', __closeMapCardHandler);
-            __closeMapCardHandler();
+            document.querySelector('.popup__close').removeEventListener('click', closePopupCard);
+            closePopupCard();
           }
 
           var pinTitle = pin.querySelector('img').getAttribute('alt');
@@ -70,7 +70,7 @@
               mapFiltersWrap.insertAdjacentElement('beforebegin', __cardFragment(cards[i]));
             }
           }
-          document.querySelector('.popup__close').addEventListener('click', __closeMapCardHandler);
+          document.querySelector('.popup__close').addEventListener('click', closePopupCard);
         });
       }
     });
@@ -78,6 +78,7 @@
 
 
   window.card = {
+    closePopupCard: closePopupCard,
     togglePopupCard: togglePopupCard
   };
 
