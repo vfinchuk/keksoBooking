@@ -145,7 +145,7 @@
 
 
   var sendFormHandler = function (data) {
-    var successHandler = function (data) {
+    var successHandler = function () {
       renderSuccessMassage('Заказ отправлен!');
     };
 
