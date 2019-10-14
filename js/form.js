@@ -163,6 +163,15 @@
     formNode.querySelector('input[name="address"]').value = locX + ' ' + locY;
   }
 
+  function resetFormHandler() {
+    formNode.querySelector('form').reset();
+    titleInput.style.backgroundColor = window.util.formDefaultColor;
+    capacitySelect.style.backgroundColor = window.util.formDefaultColor;
+    roomsSelect.style.backgroundColor = window.util.formDefaultColor;
+    typeApartmentSelect.style.backgroundColor = window.util.formDefaultColor;
+    priceInput.style.backgroundColor = window.util.formDefaultColor;
+  }
+
 
   /* Validate rooms and guests amount */
   roomsSelect.addEventListener('change', function () {
@@ -201,7 +210,8 @@
 
 
   window.form = {
-    setFormAddressHandler: setFormAddressHandler
+    setFormAddressHandler: setFormAddressHandler,
+    resetFormHandler: resetFormHandler
   };
 
   // ...

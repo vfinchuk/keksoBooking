@@ -16,7 +16,7 @@
     mapNode.classList.add('map--faded');
     formNode.querySelector('.ad-form').classList.add('ad-form--disabled');
 
-    var formFields = formNode.querySelectorAll('input, select, textarea');
+    var formFields = formNode.querySelectorAll('input, select, textarea, button');
     var filterFields = formNode.querySelectorAll('input, select');
 
     formFields.forEach(function (el) {
@@ -34,7 +34,7 @@
     mapNode.classList.remove('map--faded');
     formNode.querySelector('.ad-form').classList.remove('ad-form--disabled');
 
-    var formFields = formNode.querySelectorAll('input, select, textarea');
+    var formFields = formNode.querySelectorAll('input, select, textarea, button');
     var filterFields = filtersNode.querySelectorAll('input, select');
 
     formFields.forEach(function (el) {
@@ -75,12 +75,12 @@
    * @param {string} error - error massage
    */
   var renderErrorMassage = function (error) {
-    document.querySelector('main').appendChild(window.util.massages.error(error));
-    var el = document.querySelector('.error__button');
+    var errorNode = document.querySelector('main').appendChild(window.util.massages.error(error));
+    var tryBtn = errorNode.querySelector('.error__button');
 
-    el.addEventListener('click', function () {
+    tryBtn.addEventListener('click', function () {
       resetAppHandler();
-      document.querySelector('.error').remove();
+      errorNode.remove();
     });
   };
 
@@ -89,13 +89,11 @@
    * @param {string} massage - error massage
    */
   var renderSuccessMassage = function (massage) {
-    var massageNode = window.util.massages.success(massage);
-    mainNode.appendChild(massageNode);
-    var el = document.querySelector('.success');
+    var successNode = mainNode.appendChild(window.util.massages.success(massage));
 
-    el.addEventListener('click', function () {
+    successNode.addEventListener('click', function () {
       resetAppHandler();
-      el.remove();
+      successNode.remove();
     });
   };
 
@@ -126,36 +124,36 @@
 
 
   var startAppHandler = function () {
-    var dataSuccessHandler = function (data) {
+    var successHandler = function (data) {
       enableApp();
       renderPins(data);
       setFormInputAddress();
     };
-    var dataErrorHandler = function (massage) {
+    var errorHandler = function (massage) {
       renderErrorMassage(massage);
     };
 
-    dataLoad(dataSuccessHandler, dataErrorHandler);
+    dataLoad(successHandler, errorHandler);
   };
 
   var resetAppHandler = function () {
+    window.form.resetFormHandler();
+    window.keksMap.resetMapHandler();
     disabledPage();
-    formNode.querySelector('form').reset();
-    window.keksMap.removePinsHandler();
     startApp();
   };
 
 
   var sendFormHandler = function (data) {
-    var sendSuccessHandler = function (data) {
-      renderSuccessMassage('Заказ отправлен!1');
+    var successHandler = function (data) {
+      renderSuccessMassage('Заказ отправлен!');
     };
 
-    var sendErrorHandler = function (massage) {
+    var errorHandler = function (massage) {
       renderErrorMassage(massage);
     };
 
-    formDataSend(data, sendSuccessHandler, sendErrorHandler);
+    formDataSend(data, successHandler, errorHandler);
   };
 
   var startApp = function () {
@@ -170,15 +168,7 @@
   /* START */
   startApp();
   disabledPage();
-
   window.keksMap.movingElementOnMap(mapPinMain); // Moving event listener
-
-  /**
-   * First click on Main
-   */
-  mapPinMain.addEventListener('mousedown', function () {
-    startApp();
-  }, {once: true});
 
 
   addEventListener('keydown', function (evt) {
@@ -195,9 +185,7 @@
     sendFormHandler(new FormData(formNode.querySelector('form')));
   });
 
-  window.render = {
 
-
-  };
+  // ***
 
 })();

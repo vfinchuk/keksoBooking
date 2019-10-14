@@ -4,6 +4,7 @@
 
   var mapNode = window.util.mapNode;
 
+  var mapPinMain = mapNode.querySelector('.map__pin--main');
   var mapPinsWrap = mapNode.querySelector('.map__pins');
   var mapFiltersWrap = mapNode.querySelector('.map__filters-container');
   /**
@@ -79,10 +80,22 @@
     });
   }
 
+  function resetMapHandler() {
+    removePinsHandler();
+
+    mapPinMain.style.left = window.util.mainPinDefault.left + 'px';
+    mapPinMain.style.top = window.util.mainPinDefault.top + 'px';
+
+    var cardPopup = mapNode.querySelector('.map__card');
+    if (cardPopup) {
+      cardPopup.remove();
+    }
+  }
+
   window.keksMap = {
     movingElementOnMap: movingElementOnMap,
-    removePinsHandler: removePinsHandler,
-    renderPins: renderPins
+    renderPins: renderPins,
+    resetMapHandler: resetMapHandler
   };
 
   // ...

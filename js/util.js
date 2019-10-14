@@ -7,6 +7,12 @@
   var enterBtnKey = 13;
   var escBtnKey = 27;
 
+  var mainPinDefault = {
+    left: 570,
+    top: 375
+  };
+
+  var formDefaultColor = 'rgba(255, 255, 2555, 1)';
   var formInvalidColor = 'rgba(255, 0, 0, 0.2)';
   var formValidColor = 'rgba(0, 255, 0, 0.2)';
 
@@ -163,8 +169,11 @@
     enterBtnKey: enterBtnKey,
     escBtnKey: escBtnKey,
 
+    formDefaultColor: formDefaultColor,
     formInvalidColor: formInvalidColor,
     formValidColor: formValidColor,
+
+    mainPinDefault: mainPinDefault,
 
     randomArrayItem: randomArrayItem,
     randomNumber: randomNumber,
