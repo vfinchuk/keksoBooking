@@ -30,7 +30,7 @@
   /**
    * Do active state on site map, card-form and map-filters from
    */
-  var activePage = function () {
+  var enableApp = function () {
     mapNode.classList.remove('map--faded');
     formNode.querySelector('.ad-form').classList.remove('ad-form--disabled');
 
@@ -127,7 +127,7 @@
 
   var startAppHandler = function () {
     var dataSuccessHandler = function (data) {
-      activePage();
+      enableApp();
       renderPins(data);
       setFormInputAddress();
     };
