@@ -2,6 +2,8 @@
 
 (function () {
 
+
+
   var formNode = window.util.formNode;
   var roomsSelect = formNode.querySelector('select[name="rooms"]');
   var capacitySelect = formNode.querySelector('select[name="capacity"]');
@@ -10,7 +12,6 @@
   var typeApartmentSelect = formNode.querySelector('select[name="type"]');
   var checkInSelect = formNode.querySelector('select[name="timein"]');
   var checkOutSelect = formNode.querySelector('select[name="timeout"]');
-
 
   var timeout = null;
 
@@ -162,6 +163,15 @@
     formNode.querySelector('input[name="address"]').value = locX + ' ' + locY;
   }
 
+  function resetFormHandler() {
+    formNode.querySelector('form').reset();
+    titleInput.style.backgroundColor = window.util.formDefaultColor;
+    capacitySelect.style.backgroundColor = window.util.formDefaultColor;
+    roomsSelect.style.backgroundColor = window.util.formDefaultColor;
+    typeApartmentSelect.style.backgroundColor = window.util.formDefaultColor;
+    priceInput.style.backgroundColor = window.util.formDefaultColor;
+  }
+
 
   /* Validate rooms and guests amount */
   roomsSelect.addEventListener('change', function () {
@@ -198,8 +208,10 @@
   });
 
 
+
   window.form = {
-    setFormAddressHandler: setFormAddressHandler
+    setFormAddressHandler: setFormAddressHandler,
+    resetFormHandler: resetFormHandler
   };
 
   // ...
