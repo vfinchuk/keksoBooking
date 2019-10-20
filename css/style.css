@@ -1141,6 +1141,10 @@ fieldset {
 }
 
 .popup__photos {
+  position: relative;
+  overflow-y: scroll;
+  max-height: 220px;
+
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1152,6 +1156,9 @@ fieldset {
 }
 
 .popup__photo {
+  width: 100%;
+  height: auto;
+
   margin-right: 5px;
   margin-bottom: 5px;
 }

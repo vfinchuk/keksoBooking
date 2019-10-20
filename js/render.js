@@ -2,189 +2,181 @@
 
 (function () {
 
-  var mainNode = window.util.mainNode;
-  var mapNode = window.util.mapNode;
-  var formNode = window.util.formNode;
-  var filtersNode = window.util.filtersNode;
+  var RENDER_PINS_AMOUNT = 2;
 
-  var mapPinMain = mapNode.querySelector('.map__pin--main');
+  var mapElement = window.map.mapElement;
+  var formElement = window.form.formElement;
 
-  /**
-   * Do disable state on site map, card-form and map-filters from
-   */
-  var disabledPage = function () {
-    mapNode.classList.add('map--faded');
-    formNode.querySelector('.ad-form').classList.add('ad-form--disabled');
-
-    var formFields = formNode.querySelectorAll('input, select, textarea, button');
-    var filterFields = formNode.querySelectorAll('input, select');
-
-    formFields.forEach(function (el) {
-      el.setAttribute('disabled', '');
-    });
-    filterFields.forEach(function (el) {
-      el.setAttribute('disabled', '');
-    });
-  };
-
-  /**
-   * Do active state on site map, card-form and map-filters from
-   */
-  var enableApp = function () {
-    mapNode.classList.remove('map--faded');
-    formNode.querySelector('.ad-form').classList.remove('ad-form--disabled');
-
-    var formFields = formNode.querySelectorAll('input, select, textarea, button');
-    var filterFields = filtersNode.querySelectorAll('input, select');
-
-    formFields.forEach(function (el) {
-      el.removeAttribute('disabled');
-    });
-    filterFields.forEach(function (el) {
-      el.removeAttribute('disabled');
-    });
-  };
-
-
-  /**
-   * Map pins rendering
-   * @param {data} data
-   */
-  var renderPins = function (data) {
-    window.keksMap.renderPins(data);
-    window.card.togglePopupCard(data);
-  };
-
-  /**
-   * Add and update address in form input when mapPin move.
-   */
-  var setFormInputAddress = function () {
-    window.form.setFormAddressHandler(mapPinMain);
-
-    /* update form address if mapPinMain on move */
-    mapPinMain.addEventListener('mousedown', function () {
-      window.form.setFormAddressHandler(mapPinMain);
-      mapPinMain.addEventListener('mousemove', function () {
-        window.form.setFormAddressHandler(mapPinMain);
-      });
-    });
-  };
+  var mainWrapElement = document.querySelector('main');
+  var mapPinMainElement = mapElement.querySelector('.map__pin--main');
+  var filtersWrapElement = window.filter.filtersWrapElement;
 
   /**
    * Rendering error massage
-   * @param {string} error - error massage
+   * @param {string} massage - error massage
    */
-  var renderErrorMassage = function (error) {
-    var errorNode = document.querySelector('main').appendChild(window.util.massages.error(error));
-    var tryBtn = errorNode.querySelector('.error__button');
+  function errorMassage(massage) {
+    var errorElement = document.querySelector('main').appendChild(window.util.massages.error(massage));
+    var retryButton = errorElement.querySelector('.error__button');
 
-    tryBtn.addEventListener('click', function () {
-      resetAppHandler();
-      errorNode.remove();
-    });
-  };
+    function retryButtonClickHandler() {
+      resetApp();
+      errorElement.remove();
+      retryButton.removeEventListener('click', retryButtonClickHandler);
+    }
+
+    retryButton.addEventListener('click', retryButtonClickHandler);
+  }
 
   /**
    * Rendering success massage
    * @param {string} massage - error massage
    */
-  var renderSuccessMassage = function (massage) {
-    var successNode = mainNode.appendChild(window.util.massages.success(massage));
+  function successMassage(massage) {
+    var successElement = mainWrapElement.appendChild(window.util.massages.success(massage));
 
-    successNode.addEventListener('click', function () {
-      resetAppHandler();
-      successNode.remove();
-    });
-  };
+    function successElementClickHandler() {
+      resetApp();
+      successElement.remove();
+      successElement.removeEventListener('click', successElementClickHandler);
+    }
+
+    successElement.addEventListener('click', successElementClickHandler);
+  }
+
+  /**
+   * Toggle page state function
+   * @param {string} state - 'enable' or 'disable'
+   */
+  function togglePageState(state) {
+    var formFields = formElement.querySelectorAll('input, select, textarea, button');
+    var filterFields = filtersWrapElement.querySelectorAll('input, select');
+
+    if (state === 'disable') {
+      mapElement.classList.add('map--faded');
+      formElement.querySelector('.ad-form').classList.add('ad-form--disabled');
+
+      formFields.forEach(function (el) {
+        el.setAttribute('disabled', '');
+      });
+      filterFields.forEach(function (el) {
+        el.setAttribute('disabled', '');
+      });
+
+    } else if (state === 'enable') {
+
+      mapElement.classList.remove('map--faded');
+      formElement.querySelector('.ad-form').classList.remove('ad-form--disabled');
+
+      formFields.forEach(function (el) {
+        el.removeAttribute('disabled');
+      });
+      filterFields.forEach(function (el) {
+        el.removeAttribute('disabled');
+      });
+    }
+  }
 
 
   /**
-   * Data load function
-   * @param {callback} onSuccess
-   * @param {callback} onError
+   * Data success callback
+   * @param {data} data
    */
-  var dataLoad = function (onSuccess, onError) {
-    window.util.data.download(
-        window.util.locations.ordersData,
-        onSuccess,
-        onError
-    );
-  };
+  function dataSuccessCallback(data) {
+    var filterData = data;
 
-  var formDataSend = function (data, onSuccess, onError) {
-    window.util.data.upload(
-        window.util.locations.cardFromPath,
-        data,
-        onSuccess,
-        onError
-    );
-  };
+    data = window.filter.pinsAmountFilter(data, RENDER_PINS_AMOUNT);
 
-  /* =============handlers============= */
-
-
-  var startAppHandler = function () {
-    var successHandler = function (data) {
-      enableApp();
-      renderPins(data);
-      setFormInputAddress();
-    };
-    var errorHandler = function (massage) {
-      renderErrorMassage(massage);
-    };
-
-    dataLoad(successHandler, errorHandler);
-  };
-
-  var resetAppHandler = function () {
-    window.form.resetFormHandler();
-    window.keksMap.resetMapHandler();
-    disabledPage();
-    startApp();
-  };
-
-
-  var sendFormHandler = function (data) {
-    var successHandler = function () {
-      renderSuccessMassage('Заказ отправлен!');
-    };
-
-    var errorHandler = function (massage) {
-      renderErrorMassage(massage);
-    };
-
-    formDataSend(data, successHandler, errorHandler);
-  };
-
-  var startApp = function () {
-    mapPinMain.addEventListener('mousedown', function () {
-      startAppHandler();
+    mapPinMainElement.addEventListener('mousedown', function () {
+      mapPinMainElementMouseMoveHandler(data);
     }, {once: true});
-  };
+
+    // Filter event listeners
+    window.filter.housingTypeFilterListener(filterData);
+  }
+
+  /**
+   * Data error callback123123
+   * @param {string} massage - error massage
+   */
+  function dataErrorCallback(massage) {
+    errorMassage(massage);
+  }
+
+  /**
+   * Reset application callback
+   */
+  function resetApp() {
+    window.form.resetForm();
+    window.map.resetMap();
+    togglePageState('disable');
+
+    window.data.download(dataSuccessCallback, dataErrorCallback);
+  }
+
+
+  /**
+   * Main map pin mouse move handler
+   * @param {data} data
+   */
+  function mapPinMainElementMouseMoveHandler(data) {
+    togglePageState('enable');
+
+    window.map.renderPins(data);
+    window.card.togglePopupCard(data);
+    window.form.setFormInputAddress();
+  }
+
 
   /* =============Rendering============= */
 
-
   /* START */
-  startApp();
-  disabledPage();
-  window.keksMap.movingElementOnMap(mapPinMain); // Moving event listener
+  togglePageState('disable');
+
+  window.data.download(dataSuccessCallback, dataErrorCallback);
+
+  window.map.movingElementOnMap(mapPinMainElement);
 
 
   addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.util.enterBtnKey) {
-      startAppHandler();
+    if (evt.keyCode === window.util.BUTTON_KEY.ENTER) {
+      window.data.download(dataSuccessCallback, dataErrorCallback);
     }
   });
 
+
   /**
-   * Send order form handler
+   * Send form success callback
    */
-  formNode.addEventListener('submit', function (evt) {
+  function dataSendSuccessCallback() {
+    successMassage('Заказ отправлен!');
+  }
+
+  /**
+   * Send form error callback
+   * @param {string} massage - error massage
+   */
+  function dataSendErrorCallback(massage) {
+    errorMassage(massage);
+  }
+
+
+  function formSubmitHandler(evt) {
     evt.preventDefault();
-    sendFormHandler(new FormData(formNode.querySelector('form')));
+    var formData = new FormData(formElement.querySelector('form'));
+    window.data.upload(formData, dataSendSuccessCallback, dataSendErrorCallback);
+    formElement.removeEventListener('submit', formSubmitHandler);
+  }
+
+  formElement.addEventListener('submit', function (evt) {
+    formSubmitHandler(evt);
   });
 
+
+  window.render = {
+    RENDER_PINS_AMOUNT: RENDER_PINS_AMOUNT,
+    filtersWrapElement: filtersWrapElement
+  };
 
   // ***
 
