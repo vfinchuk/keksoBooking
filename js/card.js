@@ -2,15 +2,16 @@
 
 (function () {
 
-  var mapNode = window.util.mapNode;
-  var mapFiltersWrap = window.util.mapNode.querySelector('.map__filters-container');
+  var mapElement = window.map.mapElement;
+
+  var mapFiltersWrap = mapElement.querySelector('.map__filters-container');
 
   /**
    * Build card fragment
    * @param {object} card - card object
    * @return {Node} - card__popup fragment
    */
-  function __cardFragment(card) {
+  function cardFragment(card) {
     var fragment = document.createDocumentFragment();
     var template = document.querySelector('#card').content.querySelector('.map__card');
 
@@ -29,6 +30,7 @@
 
     card.offer.photos.forEach(function (photo) {
       var image = document.createElement('img');
+      image.classList.add('popup__photo');
       image.setAttribute('src', photo);
 
       template.querySelector('.popup__photos').appendChild(image);
@@ -38,19 +40,15 @@
   }
 
   /**
-   * Handler for close card popup
-   * @private
-   */
-  function closePopupCard() {
-    document.querySelector('.map__card').remove();
-  }
-
-  /**
    * Toggle for show popup card
    * @param {array} cards - card objects array
    */
   function togglePopupCard(cards) {
-    var mapPins = mapNode.querySelectorAll('.map__pin');
+    var mapPins = mapElement.querySelectorAll('.map__pin');
+
+    function closePopupCard() {
+      document.querySelector('.map__card').remove();
+    }
 
     mapPins.forEach(function (pin) {
 
@@ -67,7 +65,7 @@
 
           for (var i = 0; i < cards.length; i++) {
             if (pinTitle === cards[i].offer.title) {
-              mapFiltersWrap.insertAdjacentElement('beforebegin', __cardFragment(cards[i]));
+              mapFiltersWrap.insertAdjacentElement('beforebegin', cardFragment(cards[i]));
             }
           }
           document.querySelector('.popup__close').addEventListener('click', closePopupCard);
@@ -78,7 +76,6 @@
 
 
   window.card = {
-    closePopupCard: closePopupCard,
     togglePopupCard: togglePopupCard
   };
 

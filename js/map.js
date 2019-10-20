@@ -2,11 +2,19 @@
 
 (function () {
 
-  var mapNode = window.util.mapNode;
 
-  var mapPinMain = mapNode.querySelector('.map__pin--main');
-  var mapPinsWrap = mapNode.querySelector('.map__pins');
-  var mapFiltersWrap = mapNode.querySelector('.map__filters-container');
+  var MAP_PIN_DEFAULT_COOR = {
+    X: 570,
+    Y: 375
+  };
+
+
+  var mapElement = document.querySelector('.map');
+
+  var mapPinMainElement = mapElement.querySelector('.map__pin--main');
+  var mapPinsWrapElement = mapElement.querySelector('.map__pins');
+  var mapFiltersWrapElement = mapElement.querySelector('.map__filters-container');
+
   /**
    * Moving element on the map by click
    * @param {node} nodeElement - moving element
@@ -15,22 +23,22 @@
     nodeElement.addEventListener('mousedown', function (evt) {
       evt.preventDefault();
 
-      function __mouseMoveHandler(moveEvt) {
+      function mouseMoveHandler(moveEvt) {
         moveEvt.preventDefault();
 
         var elWidthOffset = nodeElement.clientWidth / 2;
         var elHeightOffset = nodeElement.clientHeight / 2;
 
         var shift = {
-          x: moveEvt.clientX - mapNode.offsetLeft - elWidthOffset,
-          y: moveEvt.clientY - mapNode.offsetTop - elHeightOffset
+          x: moveEvt.clientX - mapElement.offsetLeft - elWidthOffset,
+          y: moveEvt.clientY - mapElement.offsetTop - elHeightOffset
         };
 
         var mapCoord = {
-          left: mapNode.offsetLeft + elWidthOffset,
-          right: mapNode.offsetLeft + mapNode.clientWidth - elWidthOffset,
-          top: mapNode.offsetTop + elHeightOffset,
-          bottom: (mapNode.offsetTop + mapNode.clientHeight) - mapFiltersWrap.clientHeight,
+          left: mapElement.offsetLeft + elWidthOffset,
+          right: mapElement.offsetLeft + mapElement.clientWidth - elWidthOffset,
+          top: mapElement.offsetTop + elHeightOffset,
+          bottom: (mapElement.offsetTop + mapElement.clientHeight) - mapFiltersWrapElement.clientHeight,
         };
 
         /* moving on map by x-coordinate */
@@ -43,7 +51,7 @@
 
         /* moving on map by y-coordinate */
         if (moveEvt.clientY < mapCoord.top) {
-          nodeElement.style.top = mapNode.offsetTop + window.scrollY + 'px';
+          nodeElement.style.top = mapElement.offsetTop + window.scrollY + 'px';
         } else if (moveEvt.clientY > mapCoord.bottom - window.scrollY) {
           nodeElement.style.top = mapCoord.bottom - nodeElement.clientHeight + 'px';
         } else {
@@ -52,27 +60,27 @@
 
       }
 
-      function __mouseUpHandler() {
-        document.removeEventListener('mousemove', __mouseMoveHandler);
-        document.removeEventListener('mouseup', __mouseUpHandler);
+      function mouseUpHandler() {
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
       }
 
-      document.addEventListener('mousemove', __mouseMoveHandler);
-      document.addEventListener('mouseup', __mouseUpHandler);
+      document.addEventListener('mousemove', mouseMoveHandler);
+      document.addEventListener('mouseup', mouseUpHandler);
 
     });
   }
 
   function renderPins(data) {
-    removePinsHandler();
-    mapPinsWrap.appendChild(window.pin.mapPinsFragment(data));
+    removePins();
+    mapPinsWrapElement.appendChild(window.pin.mapPinsFragment(data));
   }
 
   /**
    * Remove all order pins from map
    */
-  function removePinsHandler() {
-    var pins = mapNode.querySelectorAll('.map__pin');
+  function removePins() {
+    var pins = mapElement.querySelectorAll('.map__pin');
     pins.forEach(function (pin) {
       if (!pin.classList.contains('map__pin--main')) {
         pin.remove();
@@ -80,22 +88,24 @@
     });
   }
 
-  function resetMapHandler() {
-    removePinsHandler();
+  function resetMap() {
+    removePins();
 
-    mapPinMain.style.left = window.util.mainPinDefault.left + 'px';
-    mapPinMain.style.top = window.util.mainPinDefault.top + 'px';
+    mapPinMainElement.style.left = MAP_PIN_DEFAULT_COOR.X + 'px';
+    mapPinMainElement.style.top = MAP_PIN_DEFAULT_COOR.Y + 'px';
 
-    var cardPopup = mapNode.querySelector('.map__card');
+    var cardPopup = mapElement.querySelector('.map__card');
     if (cardPopup) {
       cardPopup.remove();
     }
   }
 
-  window.keksMap = {
+  window.map = {
+    mapElement: mapElement,
+
     movingElementOnMap: movingElementOnMap,
     renderPins: renderPins,
-    resetMapHandler: resetMapHandler
+    resetMap: resetMap
   };
 
   // ...
