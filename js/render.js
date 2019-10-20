@@ -1,13 +1,15 @@
 'use strict';
 
 (function () {
+
+  var RENDER_PINS_AMOUNT = 5;
+
   var mapElement = window.map.mapElement;
   var formElement = window.form.formElement;
 
   var mainWrapElement = document.querySelector('main');
-  var filtersWrapElement = document.querySelector('.map__filters-container');
   var mapPinMainElement = mapElement.querySelector('.map__pin--main');
-
+  var filtersWrapElement = window.filter.filtersWrapElement;
 
   /**
    * Rendering error massage
@@ -82,6 +84,9 @@
    */
   function dataSuccessCallback(data) {
     togglePageState('enable');
+
+    data = window.filter.pinsAmountFilter(data, RENDER_PINS_AMOUNT);
+
     window.map.renderPins(data);
     window.card.togglePopupCard(data);
     window.form.setFormInputAddress();
@@ -154,6 +159,11 @@
     formSubmitHandler(evt);
   });
 
+
+  window.render = {
+    PINS_AMOUNT: RENDER_PINS_AMOUNT,
+    dataErrorCallback: dataErrorCallback
+  };
 
   // ***
 
