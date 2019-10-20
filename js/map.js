@@ -2,18 +2,21 @@
 
 (function () {
 
-
-  var MAP_PIN_DEFAULT_COOR = {
-    X: 570,
-    Y: 375
+  var PIN_COORDINATE = {
+    DEFAULT: {
+      X: 570,
+      Y: 375
+    },
+    Y_DIAPASON: {
+      TOP: 130,
+      BOTTOM: 630
+    }
   };
-
 
   var mapElement = document.querySelector('.map');
 
   var mapPinMainElement = mapElement.querySelector('.map__pin--main');
   var mapPinsWrapElement = mapElement.querySelector('.map__pins');
-  var mapFiltersWrapElement = mapElement.querySelector('.map__filters-container');
 
   /**
    * Moving element on the map by click
@@ -35,26 +38,19 @@
         };
 
         var mapCoord = {
-          left: mapElement.offsetLeft + elWidthOffset,
-          right: mapElement.offsetLeft + mapElement.clientWidth - elWidthOffset,
-          top: mapElement.offsetTop + elHeightOffset,
-          bottom: (mapElement.offsetTop + mapElement.clientHeight) - mapFiltersWrapElement.clientHeight,
+          left: mapElement.offsetLeft,
+          right: mapElement.offsetLeft + mapElement.clientWidth
         };
 
-        /* moving on map by x-coordinate */
+        /* moving on map by x-coordinate line */
         if ((moveEvt.clientX < mapCoord.left) || (moveEvt.clientX > mapCoord.right)) {
           nodeElement.style.left = mapCoord.left;
         } else {
           nodeElement.style.left = shift.x + 'px';
         }
 
-
-        /* moving on map by y-coordinate */
-        if (moveEvt.clientY < mapCoord.top) {
-          nodeElement.style.top = mapElement.offsetTop + window.scrollY + 'px';
-        } else if (moveEvt.clientY > mapCoord.bottom - window.scrollY) {
-          nodeElement.style.top = mapCoord.bottom - nodeElement.clientHeight + 'px';
-        } else {
+        /* moving on map by y-coordinate line */
+        if ((moveEvt.clientY > PIN_COORDINATE.Y_DIAPASON.TOP) && (moveEvt.clientY < PIN_COORDINATE.Y_DIAPASON.BOTTOM)) {
           nodeElement.style.top = shift.y + window.scrollY + 'px';
         }
 
@@ -91,8 +87,8 @@
   function resetMap() {
     removePins();
 
-    mapPinMainElement.style.left = MAP_PIN_DEFAULT_COOR.X + 'px';
-    mapPinMainElement.style.top = MAP_PIN_DEFAULT_COOR.Y + 'px';
+    mapPinMainElement.style.left = PIN_COORDINATE.DEFAULT.X + 'px';
+    mapPinMainElement.style.top = PIN_COORDINATE.DEFAULT.Y + 'px';
 
     var cardPopup = mapElement.querySelector('.map__card');
     if (cardPopup) {
