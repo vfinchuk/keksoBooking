@@ -2,9 +2,10 @@
 
 (function () {
 
-  var filtersWrapElement = document.querySelector('.map__filters-container');
 
+  var filtersWrapElement = document.querySelector('.map__filters-container');
   var housingTypeFilterSelect = filtersWrapElement.querySelector('select[name="housing-type"]');
+
 
   /**
    * Slice data array
@@ -17,32 +18,35 @@
   }
 
   /**
-   * Event listener housing type filter
+   * Filter by house type
+   * @param {data} data
    */
-  housingTypeFilterSelect.addEventListener('change', function (evt) {
+  function housingTypeFilterListener(data) {
+    var filterData = data;
 
-    function housingTypeFilterCallback(data) {
+    housingTypeFilterSelect.addEventListener('change', function (evt) {
       var houseTypeSelected = evt.target.options[evt.target.selectedIndex].value;
+
       if (houseTypeSelected !== 'any') {
-        data = data.filter(function (item) {
+        filterData = data.filter(function (item) {
           return item.offer.type === houseTypeSelected;
         });
+      } else {
+        filterData = data;
       }
 
-      data = pinsAmountFilter(data, window.render.RENDER_PINS_AMOUNT);
+      filterData = pinsAmountFilter(filterData, window.render.RENDER_PINS_AMOUNT);
 
-      window.map.renderPins(data);
-      window.card.togglePopupCard(data);
-    }
-
-    window.data.download(housingTypeFilterCallback, window.render.dataErrorCallback);
-  });
+      window.map.renderPins(filterData);
+      window.card.togglePopupCard(filterData);
+      window.card.closePopupCard();
+    });
+  }
 
 
   window.filter = {
     filtersWrapElement: filtersWrapElement,
-    housingTypeFilterSelect: housingTypeFilterSelect,
-
+    housingTypeFilterListener: housingTypeFilterListener,
     pinsAmountFilter: pinsAmountFilter
   };
 

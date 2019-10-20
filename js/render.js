@@ -2,7 +2,7 @@
 
 (function () {
 
-  var RENDER_PINS_AMOUNT = 5;
+  var RENDER_PINS_AMOUNT = 2;
 
   var mapElement = window.map.mapElement;
   var formElement = window.form.formElement;
@@ -20,7 +20,7 @@
     var retryButton = errorElement.querySelector('.error__button');
 
     function retryButtonClickHandler() {
-      resetAppHandler();
+      resetApp();
       errorElement.remove();
       retryButton.removeEventListener('click', retryButtonClickHandler);
     }
@@ -36,7 +36,7 @@
     var successElement = mainWrapElement.appendChild(window.util.massages.success(massage));
 
     function successElementClickHandler() {
-      resetAppHandler();
+      resetApp();
       successElement.remove();
       successElement.removeEventListener('click', successElementClickHandler);
     }
@@ -83,35 +83,48 @@
    * @param {data} data
    */
   function dataSuccessCallback(data) {
-    togglePageState('enable');
+    var filterData = data;
 
     data = window.filter.pinsAmountFilter(data, RENDER_PINS_AMOUNT);
 
-    window.map.renderPins(data);
-    window.card.togglePopupCard(data);
-    window.form.setFormInputAddress();
+    mapPinMainElement.addEventListener('mousedown', function () {
+      mapPinMainElementMouseMoveHandler(data);
+    }, {once: true});
+
+    // Filter event listeners
+    window.filter.housingTypeFilterListener(filterData);
   }
 
   /**
-   * Data error callback
+   * Data error callback123123
    * @param {string} massage - error massage
    */
   function dataErrorCallback(massage) {
     errorMassage(massage);
   }
 
-
-  function resetAppHandler() {
+  /**
+   * Reset application callback
+   */
+  function resetApp() {
     window.form.resetForm();
     window.map.resetMap();
     togglePageState('disable');
-    mapPinMainElement.addEventListener('mousedown', mapPinMainElementStartAppHandler, {once: true});
+
+    window.data.download(dataSuccessCallback, dataErrorCallback);
   }
 
 
-  function mapPinMainElementStartAppHandler() {
-    window.data.download(dataSuccessCallback, dataErrorCallback);
-    mapPinMainElement.removeEventListener('mousemove', mapPinMainElementStartAppHandler);
+  /**
+   * Main map pin mouse move handler
+   * @param {data} data
+   */
+  function mapPinMainElementMouseMoveHandler(data) {
+    togglePageState('enable');
+
+    window.map.renderPins(data);
+    window.card.togglePopupCard(data);
+    window.form.setFormInputAddress();
   }
 
 
@@ -120,7 +133,7 @@
   /* START */
   togglePageState('disable');
 
-  mapPinMainElement.addEventListener('mousedown', mapPinMainElementStartAppHandler, {once: true});
+  window.data.download(dataSuccessCallback, dataErrorCallback);
 
   window.map.movingElementOnMap(mapPinMainElement);
 
@@ -162,7 +175,7 @@
 
   window.render = {
     RENDER_PINS_AMOUNT: RENDER_PINS_AMOUNT,
-    dataErrorCallback: dataErrorCallback
+    filtersWrapElement: filtersWrapElement
   };
 
   // ***

@@ -40,15 +40,21 @@
   }
 
   /**
+   * Close popup card
+   */
+  function closePopupCard() {
+    var card = document.querySelector('.map__card');
+    if (card) {
+      document.querySelector('.map__card').remove();
+    }
+  }
+
+  /**
    * Toggle for show popup card
    * @param {array} cards - card objects array
    */
   function togglePopupCard(cards) {
     var mapPins = mapElement.querySelectorAll('.map__pin');
-
-    function closePopupCard() {
-      document.querySelector('.map__card').remove();
-    }
 
     mapPins.forEach(function (pin) {
 
@@ -76,7 +82,8 @@
 
 
   window.card = {
-    togglePopupCard: togglePopupCard
+    togglePopupCard: togglePopupCard,
+    closePopupCard: closePopupCard
   };
 
   // ...
