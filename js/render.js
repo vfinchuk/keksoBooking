@@ -161,7 +161,7 @@
 
 
   window.render = {
-    PINS_AMOUNT: RENDER_PINS_AMOUNT,
+    RENDER_PINS_AMOUNT: RENDER_PINS_AMOUNT,
     dataErrorCallback: dataErrorCallback
   };
 

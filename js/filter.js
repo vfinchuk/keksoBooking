@@ -29,6 +29,8 @@
         });
       }
 
+      data = pinsAmountFilter(data, window.render.RENDER_PINS_AMOUNT);
+
       window.map.renderPins(data);
       window.card.togglePopupCard(data);
     }
