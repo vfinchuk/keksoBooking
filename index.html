@@ -168,12 +168,12 @@
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="description">Описание (не обязательно)</label>
           <textarea id="description" name="description" placeholder="Здесь расскажите о том, какое ваше жилье замечательное и вообще"></textarea>
-        </fieldset>
+        </fieldset>f
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label">Фотографии жилья</label>
           <div class="ad-form__photo-container">
             <div class="ad-form__upload">
-              <input type="file" id="images" name="images" class="ad-form__input visually-hidden">
+              <input type="file" id="images" name="images" class="ad-form__input visually-hidden" multiple>
               <label for="images" class="ad-form__drop-zone">Загрузите или&nbsp;перетащите сюда фото</label>
             </div>
             <div class="ad-form__photo"></div>
@@ -240,6 +240,13 @@
     </div>
   </template>
 
+  <!-- Фотография обьявления -->s
+  <template id="photo">
+    <div class="ad-form__photo">
+      <img src="img/muffin-grey.svg" alt="Фотография обьявления" width="40" height="44">
+    </div>
+  </template>
+
   <!-- Сообщение об ошибке создания объеявления -->
   <template id="error">
     <div class="error">
@@ -247,19 +254,15 @@
       <button class="error__button" href="#">Попробовать снова</button>
     </div>
   </template>
-
-
-  <script src="js/util.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/config.js"></script>
   <script src="js/data.js"></script>
   <script src="js/map.js"></script>
-  <script src="js/card.js"></script>
-  <script src="js/pin.js"></script>
+  <script src="js/main-pin.js"></script>
+  <script src="js/pins.js"></script>
   <script src="js/form.js"></script>
+  <script src="js/popup.js"></script>
   <script src="js/filter.js"></script>
-
-
-  <script src="js/render.js"></script>
-
 
 </body>
 </html>
