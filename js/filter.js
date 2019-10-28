@@ -99,7 +99,6 @@
   });
 
 
-
   window.filter = {
     copyData: function (data) {
       pinsData = data.slice();
