@@ -2,15 +2,20 @@
 
 (function () {
 
+  var dataConfig = {
+    SAVE: 'https://js.dump.academy/keksobooking',
+    DOWNLOAD: 'https://js.dump.academy/keksobooking/data'
+  };
+
   var xhrConfig = {
     RESPONSE_TYPE: 'json',
     SUCCESS_STATUS: 200,
     TIMEOUT: 5000,
 
     ERROR_MASSAGE: {
-      LOAD: 'Cтатус ответа:',
-      ERROR: 'Ошибка соединения',
-      TIMEOUT: 'Запрос не успел выполнится за'
+      LOAD: 'статус ответа:',
+      ERROR: 'ошибка соединения',
+      TIMEOUT: 'запрос не успел выполнится за'
     }
   };
 
@@ -30,7 +35,7 @@
     });
 
     xhr.addEventListener('timeout', function () {
-      onError(xhrConfig.ERROR_MASSAGE.TIMEOUT + ' ' + xhr.timeout + ' мс');
+      onError(xhrConfig.ERROR_MASSAGE.TIMEOUT + ' ' + (xhr.timeout / 1000) + ' с');
     });
 
     xhr.timeout = xhrConfig.TIMEOUT;
@@ -42,17 +47,14 @@
   window.data = {
     download: function (cbSuccess, cbError) {
       var xhr = xhrInit(new XMLHttpRequest(), cbSuccess, cbError);
-      xhr.open('GET', window.config.DOWNLOAD_DATA);
+      xhr.open('GET', dataConfig.DOWNLOAD);
       xhr.send();
     },
 
     upload: function (data, cbSuccess, cbError) {
       var xhr = xhrInit(new XMLHttpRequest(), cbSuccess, cbError);
-      xhr.open('POST', window.config.SAVE_DATA);
+      xhr.open('POST', dataConfig.SAVE);
       xhr.send(data);
     }
   };
-
-  // ...
-
 })();

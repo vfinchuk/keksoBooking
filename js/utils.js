@@ -87,8 +87,6 @@
           successHandler();
         });
       });
-
-
     },
 
     removeErrorMassage: function () {

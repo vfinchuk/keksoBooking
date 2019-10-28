@@ -93,6 +93,10 @@
     window.map.init();
   });
 
+  mainPin.addEventListener('keydown', function (evt) {
+    window.utils.onEnterPress(evt, window.map.init);
+  });
+
 
   setAddressCoord(true);
 

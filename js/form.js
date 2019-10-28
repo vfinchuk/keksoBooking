@@ -19,7 +19,6 @@
   var MAX_GUESTS_AMOUNT = 100;
   var MAX_PRICE = 1000000;
 
-
   var orderForm = document.querySelector('.ad-form');
 
   var title = orderForm.querySelector('#title');
@@ -114,9 +113,15 @@
     }
   };
 
-  /**
-   * Set avatar photo
-   */
+
+  // functions for validate form when page render
+  validateTitle();
+  validatePrice();
+  price.setAttribute('min', priceByHousingType[housingType.value]);
+  validateRoomsAndCapacity();
+
+
+  // Form event listeners
   avatar.addEventListener('change', function (evt) {
     var file = evt.target.files[0];
     readFile(file, function (evtFile) {
@@ -124,34 +129,18 @@
     });
   });
 
-
-  /**
-   * Validate title
-   */
-  validateTitle();
   title.addEventListener('input', window.utils.debounce(validateTitle));
 
-  /**
-   * Validate price by housing type
-   */
-  price.setAttribute('min', priceByHousingType[housingType.value]);
+  price.addEventListener('input', window.utils.debounce(validatePrice));
+
   housingType.addEventListener('change', function (evt) {
     price.setAttribute('min', priceByHousingType[evt.target.value]);
   });
 
-  validatePrice();
-  price.addEventListener('input', window.utils.debounce(validatePrice));
-
-  /**
-   * Validate rooms and capacity
-   */
-  validateRoomsAndCapacity();
   rooms.addEventListener('change', validateRoomsAndCapacity);
+
   capacity.addEventListener('change', validateRoomsAndCapacity);
 
-  /**
-   * Validate check in and out
-   */
   checkIn.addEventListener('change', function (evt) {
     setCheckInAndOut(evt.target.value);
   });
@@ -160,9 +149,6 @@
     setCheckInAndOut(evt.target.value);
   });
 
-  /**
-   * set order images
-   */
   images.addEventListener('change', function (evt) {
     var files = evt.target.files;
 
@@ -173,14 +159,11 @@
     });
   });
 
-
-  var resetButtonHandler = function () {
-    window.form.disable();
-    window.map.disable();
-  };
-
   resetButton.addEventListener('click', function () {
-    resetButtonHandler();
+    var resetButtonHandler = function () {
+      window.form.disable();
+      window.map.disable();
+    };
     resetButton.removeEventListener('click', resetButtonHandler);
   });
 
@@ -188,6 +171,7 @@
   var successHandler = function () {
     window.utils.successMassage('Заказ отправлен!', function () {
       orderForm.reset();
+      window.popup.remove();
       window.form.disable();
       window.map.disable();
       window.mainPin.setDefault();
@@ -242,6 +226,7 @@
     }
   };
 
+  // Disabled form when page render
   window.form.disable();
 
 })();
