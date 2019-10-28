@@ -2,54 +2,129 @@
 
 (function () {
 
+  var price = {
+    select: {
+      LOW: 'low',
+      MIDDLE: 'middle',
+      HIGH: 'high'
+    },
+    value: {
+      MIN: 10000,
+      MAX: 50000
+    }
+  };
 
-  var filtersWrapElement = document.querySelector('.map__filters-container');
-  var housingTypeFilterSelect = filtersWrapElement.querySelector('select[name="housing-type"]');
+  var filtersForm = document.querySelector('.map__filters');
+
+  var housingType = filtersForm.querySelector('#housing-type');
+  var housingPrice = filtersForm.querySelector('#housing-price');
+  var housingRooms = filtersForm.querySelector('#housing-rooms');
+  var housingGuests = filtersForm.querySelector('#housing-guests');
+  var housingFeatures = filtersForm.querySelector('#housing-features');
+
+  var pinsData = [];
 
 
-  /**
-   * Slice data array
-   * @param {data} data - orders data
-   * @param {int} pinsAmount - amount pins for rendering on map
-   * @return {data} data - sliced data
-   */
-  function pinsAmountFilter(data, pinsAmount) {
-    return data.slice(0, pinsAmount);
-  }
+  var checkHousingType = function (pin) {
+    return housingType.value === 'any' ? true : housingType.value === pin.offer.type;
+  };
 
-  /**
-   * Filter by house type
-   * @param {data} data
-   */
-  function housingTypeFilterListener(data) {
-    var filterData = data;
+  var checkHousingRooms = function (pin) {
+    return housingRooms.value === 'any' ? true : parseInt(housingRooms.value, 10) === pin.offer.rooms;
+  };
 
-    housingTypeFilterSelect.addEventListener('change', function (evt) {
-      var houseTypeSelected = evt.target.options[evt.target.selectedIndex].value;
+  var checkHousingGuests = function (pin) {
+    return housingGuests.value === 'any' ? true : parseInt(housingGuests.value, 10) === pin.offer.guests;
+  };
 
-      if (houseTypeSelected !== 'any') {
-        filterData = data.filter(function (item) {
-          return item.offer.type === houseTypeSelected;
-        });
-      } else {
-        filterData = data;
-      }
+  var checkHousingPrice = function (pin) {
+    var offerPrice = pin.offer.price;
 
-      filterData = pinsAmountFilter(filterData, window.render.RENDER_PINS_AMOUNT);
+    switch (housingPrice.value) {
+      case price.select.LOW:
+        return offerPrice < price.value.MIN;
 
-      window.map.renderPins(filterData);
-      window.card.togglePopupCard(filterData);
-      window.card.closePopupCard();
+      case price.select.MIDDLE:
+        return offerPrice >= price.value.MIN && offerPrice <= price.value.MAX;
+
+      case price.select.HIGH:
+        return offerPrice > price.value.MAX;
+
+      default:
+        return offerPrice;
+    }
+  };
+
+  var checkHousingFeatures = function (pin) {
+    return Array.from(housingFeatures.children)
+      .filter(function (featureItem) {
+        return featureItem.checked === true;
+      })
+      .map(function (item) {
+        return item.value;
+      })
+      .every(function (feature) {
+        return pin.offer.features.includes(feature);
+      });
+  };
+
+
+  filtersForm.addEventListener('change', window.utils.debounce(function () {
+    var filterPins = pinsData.filter(function (pin) {
+      return (
+        checkHousingType(pin) &&
+        checkHousingRooms(pin) &&
+        checkHousingGuests(pin) &&
+        checkHousingPrice(pin) &&
+        checkHousingFeatures(pin)
+      );
     });
-  }
+    window.pins.render(filterPins);
+  }));
+
+
+  filtersForm.addEventListener('keydown', function (evt) {
+    window.utils.onEnterPress(evt, function () {
+      var filterPins = pinsData.filter(function (pin) {
+        return (
+          checkHousingType(pin) &&
+          checkHousingRooms(pin) &&
+          checkHousingGuests(pin) &&
+          checkHousingPrice(pin) &&
+          checkHousingFeatures(pin)
+        );
+      });
+      window.pins.render(filterPins);
+    });
+  });
 
 
   window.filter = {
-    filtersWrapElement: filtersWrapElement,
-    housingTypeFilterListener: housingTypeFilterListener,
-    pinsAmountFilter: pinsAmountFilter
-  };
+    copyData: function (data) {
+      pinsData = data.slice();
+    },
 
-  // ...
+    enable: function () {
+      filtersForm.classList.remove('map__filters--disabled');
+      filtersForm.querySelector('fieldset').disabled = false;
+
+      var selects = filtersForm.querySelectorAll('select');
+
+      selects.forEach(function (select) {
+        select.disabled = false;
+      });
+    },
+
+    disable: function () {
+      filtersForm.classList.add('map__filters--disabled');
+      filtersForm.querySelector('fieldset').disabled = true;
+
+      var selects = filtersForm.querySelectorAll('select');
+
+      selects.forEach(function (select) {
+        select.disabled = true;
+      });
+    }
+  };
 
 })();

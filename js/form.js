@@ -2,253 +2,232 @@
 
 (function () {
 
+  var DEFAULT_AVATAR_IMG = 'img/muffin-grey.svg';
 
-  var FIELD_BG_COLOR = {
-    DEFAULT: 'rgba(255, 255, 2555, 1)',
-    INVALID: 'rgba(255, 0, 0, 0.2)',
-    VALID: 'rgba(0, 255, 0, 0.2)'
+  var titleLength = {
+    MIN: 30,
+    MAX: 100
   };
 
-  var formElement = document.querySelector('.notice');
-  var mapPinMainElement = window.map.mapElement.querySelector('.map__pin--main');
+  var priceByHousingType = {
+    'bungalo': 0,
+    'flat': 1000,
+    'house': 5000,
+    'palace': 10000
+  };
 
-  var roomsSelect = formElement.querySelector('select[name="rooms"]');
-  var capacitySelect = formElement.querySelector('select[name="capacity"]');
-  var titleInput = formElement.querySelector('input[name="title"]');
-  var priceInput = formElement.querySelector('input[name="price"]');
-  var typeApartmentSelect = formElement.querySelector('select[name="type"]');
-  var checkInSelect = formElement.querySelector('select[name="timein"]');
-  var checkOutSelect = formElement.querySelector('select[name="timeout"]');
+  var MAX_GUESTS_AMOUNT = 100;
+  var MAX_PRICE = 1000000;
 
-  var timeout = null;
-  var CB_DELAY = 250;
+  var orderForm = document.querySelector('.ad-form');
 
-  function setTimeoutEventCallback(evt, callback) {
-    if (timeout !== null) {
-      clearTimeout(timeout);
+  var title = orderForm.querySelector('#title');
+
+  var price = orderForm.querySelector('#price');
+  var housingType = orderForm.querySelector('#type');
+
+  var rooms = orderForm.querySelector('#room_number');
+  var capacity = orderForm.querySelector('#capacity');
+
+  var checkIn = orderForm.querySelector('#timein');
+  var checkOut = orderForm.querySelector('#timeout');
+
+  var avatar = orderForm.querySelector('#avatar');
+  var previewImg = orderForm.querySelector('.ad-form-header__preview img');
+
+  var images = orderForm.querySelector('#images');
+
+  var resetButton = orderForm.querySelector('.ad-form__reset');
+
+
+  var validateTitle = function () {
+    var length = title.value.length;
+
+    if (length === 0) {
+      title.setCustomValidity('Поле обязательное для заполнения');
+    } else if (length > titleLength.MAX) {
+      title.setCustomValidity('Заголовок обьявления слишком длинный');
+    } else if (length < titleLength.MIN) {
+      title.setCustomValidity('Заголовок обьявления слишком короткий');
+    } else {
+      title.setCustomValidity('');
     }
-    timeout = setTimeout(function () {
-      callback(evt, evt.target);
-    }, CB_DELAY);
-  }
+  };
 
-  function setSelectedOption(selectNode, optionVal) {
-    selectNode.querySelectorAll('option').forEach(function (el) {
-      el.removeAttribute('selected');
-      if (el.getAttribute('value') === optionVal) {
-        el.setAttribute('selected', '');
-      }
+  var validatePrice = function () {
+    var minValue = parseInt(price.getAttribute('min'), 10);
+    var value = parseInt(price.value, 10);
+
+    if (price.value === '') {
+      price.setCustomValidity('Введите цену за ночь');
+    } else if (value < minValue) {
+      price.setCustomValidity('Минимальная цена на ' + window.form.housingTypeDictionary[housingType.value] + ' составляет ' + minValue + 'руб.');
+    } else if (value > MAX_PRICE) {
+      price.setCustomValidity('Максимальная цена не должна превышать ' + MAX_PRICE + 'руб.');
+    } else if (value >= minValue) {
+      price.setCustomValidity('');
+    }
+  };
+
+  var validateRoomsAndCapacity = function () {
+    var roomsAmount = parseInt(rooms.value, 10);
+    var guestsAmount = parseInt(capacity.value, 10);
+
+    if (roomsAmount < guestsAmount && roomsAmount !== MAX_GUESTS_AMOUNT) {
+      capacity.setCustomValidity('Гостей больше чем комнат');
+    } else if (roomsAmount === MAX_GUESTS_AMOUNT && guestsAmount !== 0) {
+      capacity.setCustomValidity('Не для гостей');
+    } else if (guestsAmount === 0 && roomsAmount !== MAX_GUESTS_AMOUNT) {
+      rooms.setCustomValidity('Необходимо 100 комнат');
+    } else {
+      capacity.setCustomValidity('');
+      rooms.setCustomValidity('');
+    }
+  };
+
+  var setCheckInAndOut = function (time) {
+    checkIn.value = time;
+    checkOut.value = time;
+  };
+
+  var renderPhoto = function (src) {
+    var photo = document.querySelector('#photo').content.querySelector('div');
+    var template = photo.cloneNode(true);
+    template.querySelector('img').src = src;
+    document.querySelector('.ad-form__photo-container').insertAdjacentElement('beforeend', template);
+  };
+
+  var readFile = function (file, callback) {
+    if (file) {
+      var reader = new FileReader();
+
+      reader.readAsDataURL(file);
+
+      reader.onload = function (evt) {
+        callback(evt);
+      };
+      reader.onerror = function () {
+        window.utils.errorMassage('Произошла ошибка загрузки', false);
+        return false;
+      };
+    }
+  };
+
+
+  // functions for validate form when page render
+  validateTitle();
+  validatePrice();
+  price.setAttribute('min', priceByHousingType[housingType.value]);
+  validateRoomsAndCapacity();
+
+
+  // Form event listeners
+  avatar.addEventListener('change', function (evt) {
+    var file = evt.target.files[0];
+    readFile(file, function (evtFile) {
+      previewImg.src = evtFile.target.result;
     });
-  }
+  });
 
-  /**
-   * Validate amount rooms and guests
-   * @param {node} roomsNode - rooms select from form
-   * @param {node} capacityNode - capacity select from form
-   * @return {boolean} true | false
-   * @private
-   */
-  function validateRoomsAndCapacityHandler(roomsNode, capacityNode) {
-    var rooms = parseInt(roomsNode.options[roomsNode.selectedIndex].value, 10);
-    var guests = parseInt(capacityNode.options[capacityNode.selectedIndex].value, 10);
+  title.addEventListener('input', window.utils.debounce(validateTitle));
 
-    if (rooms !== guests) {
-      var roomsErrorText = rooms < guests ? 'Комнат меньше чем гостей' : 'Комнат больше чем гостей';
-      var capacityErrorText = rooms < guests ? 'Гостей больше чем комнат' : 'Гостей меньше чем комнат';
+  price.addEventListener('input', window.utils.debounce(validatePrice));
 
-      roomsNode.setCustomValidity(roomsErrorText);
-      capacityNode.setCustomValidity(capacityErrorText);
-      roomsNode.style.backgroundColor = FIELD_BG_COLOR.INVALID;
-      capacityNode.style.backgroundColor = FIELD_BG_COLOR.INVALID;
+  housingType.addEventListener('change', function (evt) {
+    price.setAttribute('min', priceByHousingType[evt.target.value]);
+  });
 
-    } else {
+  rooms.addEventListener('change', validateRoomsAndCapacity);
 
-      roomsNode.setCustomValidity('');
-      capacityNode.setCustomValidity('');
-      roomsNode.style.backgroundColor = FIELD_BG_COLOR.VALID;
-      capacityNode.style.backgroundColor = FIELD_BG_COLOR.VALID;
-      return true;
-    }
+  capacity.addEventListener('change', validateRoomsAndCapacity);
 
-    return false;
-  }
+  checkIn.addEventListener('change', function (evt) {
+    setCheckInAndOut(evt.target.value);
+  });
 
-  /**
-   * Validate order title input
-   * @param {node} evt - input event
-   * @param {node} titleNode - form title input
-   * @return {boolean}
-   * @private
-   */
-  function validateTitle(evt, titleNode) {
-    var titleLength = evt.target.value.length;
+  checkOut.addEventListener('change', function (evt) {
+    setCheckInAndOut(evt.target.value);
+  });
 
-    if (titleLength === 0) {
-      titleNode.setCustomValidity('Поле обязательное для заполнения');
-      titleNode.style.backgroundColor = FIELD_BG_COLOR.INVALID;
-    } else if (titleLength > 100) {
-      titleNode.setCustomValidity('Заголовок обьявления слишком длинный');
-      titleNode.style.backgroundColor = FIELD_BG_COLOR.INVALID;
-    } else if (titleLength < 30) {
-      titleNode.setCustomValidity('Заголовок обьявления слишком короткий');
-      titleNode.style.backgroundColor = FIELD_BG_COLOR.INVALID;
-    } else {
-      titleNode.setCustomValidity('');
-      titleNode.style.backgroundColor = FIELD_BG_COLOR.VALID;
-      return true;
-    }
+  images.addEventListener('change', function (evt) {
+    var files = evt.target.files;
 
-    return false;
-  }
-
-  /**
-   * Validate order price input
-   * @param {node} evt - input event
-   * @param {node} priceNode - form price input
-   * @return {*} if price available return price sum or false
-   * @private
-   */
-  function validatePrice(evt, priceNode) {
-    var price = parseInt(evt.target.value, 10);
-
-    if (price > 1000000) {
-      priceNode.setCustomValidity('Вы привысили максимальное значение 1.000.000');
-      priceNode.style.backgroundColor = FIELD_BG_COLOR.INVALID;
-    } else if (price <= 0) {
-      priceNode.setCustomValidity('Минимальная цена не божет быть меньше 1');
-      priceNode.style.backgroundColor = FIELD_BG_COLOR.INVALID;
-    } else {
-      priceNode.setCustomValidity('');
-      priceNode.style.backgroundColor = FIELD_BG_COLOR.VALID;
-      return price;
-    }
-    return false;
-  }
-
-  /**
-   * Validate type apartment select
-   * @param {int} price - price by night
-   * @param {node} typeNode - apartment type select
-   * @return {boolean}
-   * @private
-   */
-  function validateTypeApartment(price, typeNode) {
-
-    switch (true) {
-      case price >= 0 && price < 1000:
-        setSelectedOption(typeNode, 'bungalo');
-        typeNode.style.backgroundColor = FIELD_BG_COLOR.VALID;
-        break;
-      case price >= 1000 && price < 5000:
-        setSelectedOption(typeNode, 'flat');
-        typeNode.style.backgroundColor = FIELD_BG_COLOR.VALID;
-        break;
-      case price >= 5000 && price < 10000:
-        setSelectedOption(typeNode, 'house');
-        typeNode.style.backgroundColor = FIELD_BG_COLOR.VALID;
-        break;
-      case price >= 10000:
-        setSelectedOption(typeNode, 'palace');
-        typeNode.style.backgroundColor = FIELD_BG_COLOR.VALID;
-        break;
-    }
-
-    if (!price) {
-      typeNode.style.backgroundColor = FIELD_BG_COLOR.INVALID;
-    }
-
-    return false;
-  }
-
-  /**
-   * Include X Y coordinate mapPin in address input field
-   * @param {node} el event target element
-   */
-  function setFormAddress(el) {
-    var locX = parseInt(el.offsetLeft + (el.clientWidth / 2), 10);
-    var locY = parseInt(el.offsetTop + el.clientHeight, 10);
-
-    formElement.querySelector('input[name="address"]').value = locX + ' ' + locY;
-  }
-
-
-  /**
-   * Add and update address in form input when mapPin move.
-   */
-  function setFormInputAddress() {
-    window.form.setFormAddress(mapPinMainElement);
-
-    function formAddressMouseMoveHandler() {
-      mapPinMainElement.addEventListener('mousedown', function () {
-        setFormAddress(mapPinMainElement);
-        mapPinMainElement.addEventListener('mousemove', function () {
-          setFormAddress(mapPinMainElement);
-          mapPinMainElement.removeEventListener('mousemove', formAddressMouseMoveHandler);
-        });
-        mapPinMainElement.removeEventListener('mousedown', formAddressMouseMoveHandler);
+    Array.from(files).forEach(function (file) {
+      readFile(file, function (evtFile) {
+        renderPhoto(evtFile.target.result);
       });
-    }
-
-    mapPinMainElement.addEventListener('mousedown', formAddressMouseMoveHandler);
-  }
-
-  /**
-   * Reset form
-   */
-  function resetForm() {
-    formElement.querySelector('form').reset();
-    titleInput.style.backgroundColor = FIELD_BG_COLOR.DEFAULT;
-    capacitySelect.style.backgroundColor = FIELD_BG_COLOR.DEFAULT;
-    roomsSelect.style.backgroundColor = FIELD_BG_COLOR.DEFAULT;
-    typeApartmentSelect.style.backgroundColor = FIELD_BG_COLOR.DEFAULT;
-    priceInput.style.backgroundColor = FIELD_BG_COLOR.DEFAULT;
-  }
-
-
-  /* Validate rooms and guests amount */
-  roomsSelect.addEventListener('change', function () {
-    validateRoomsAndCapacityHandler(roomsSelect, capacitySelect);
+    });
   });
 
-  capacitySelect.addEventListener('change', function () {
-    validateRoomsAndCapacityHandler(roomsSelect, capacitySelect);
+  resetButton.addEventListener('click', function () {
+    var resetButtonHandler = function () {
+      window.form.disable();
+      window.map.disable();
+    };
+    resetButton.removeEventListener('click', resetButtonHandler);
   });
 
-  /* Validate title */
-  titleInput.addEventListener('input', function (evt) {
-    setTimeoutEventCallback(evt, validateTitle);
-  });
 
-  /* Validate price and type apartment*/
-  priceInput.addEventListener('input', function (evt) {
-    var price = validatePrice(evt, priceInput);
-    setTimeoutEventCallback(evt, validatePrice);
-    validateTypeApartment(price, typeApartmentSelect);
-  });
+  var successHandler = function () {
+    window.utils.successMassage('Заказ отправлен!', function () {
+      orderForm.reset();
+      window.popup.remove();
+      window.form.disable();
+      window.map.disable();
+      window.mainPin.setDefault();
+      window.utils.removeSuccessMassage();
+    });
+  };
 
-  /* Validate checkIn and checkOut selects */
-  checkInSelect.addEventListener('change', function (evt) {
-    setSelectedOption(checkOutSelect, evt.target.value);
-    evt.target.style.backgroundColor = FIELD_BG_COLOR.VALID;
-    checkOutSelect.style.backgroundColor = FIELD_BG_COLOR.VALID;
-  });
+  var errorHandler = function (errorMassage) {
+    window.popup.remove();
+    window.utils.errorMassage(errorMassage, function () {
+      window.utils.removeErrorMassage();
+    });
+  };
 
-  checkOutSelect.addEventListener('change', function (evt) {
-    setSelectedOption(checkInSelect, evt.target.value);
-    evt.target.style.backgroundColor = FIELD_BG_COLOR.VALID;
-    checkInSelect.style.backgroundColor = FIELD_BG_COLOR.VALID;
+  orderForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.data.upload(new FormData(orderForm), successHandler, errorHandler);
   });
 
 
   window.form = {
-    formElement: formElement,
+    housingTypeDictionary: {
+      'palace': 'Дворец',
+      'flat': 'Квартира',
+      'house': 'Дом',
+      'bungalo': 'Бунгало'
+    },
 
-    setFormInputAddress: setFormInputAddress,
-    setFormAddress: setFormAddress,
-    resetForm: resetForm
+    enable: function () {
+      orderForm.classList.remove('ad-form--disabled');
+
+      var fieldsets = orderForm.querySelectorAll('fieldset');
+      fieldsets.forEach(function (fieldset) {
+        fieldset.disabled = false;
+      });
+    },
+
+    disable: function () {
+      orderForm.classList.add('ad-form--disabled');
+
+      var fieldsets = orderForm.querySelectorAll('fieldset');
+      fieldsets.forEach(function (fieldset) {
+        fieldset.disabled = true;
+      });
+
+      var photos = orderForm.querySelectorAll('.ad-form__photo');
+      photos.forEach(function (photo) {
+        photo.remove();
+      });
+
+      previewImg.src = DEFAULT_AVATAR_IMG;
+    }
   };
 
-  // ...
+  // Disabled form when page render
+  window.form.disable();
 
 })();
 
