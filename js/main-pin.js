@@ -20,11 +20,12 @@
   var MAP_WIDTH = document.querySelector('.map').offsetWidth;
   var mainPin = document.querySelector('.map__pin--main');
 
-  var defaultCood = new Coordinate(mainPin.offsetLeft, mainPin.offsetTop);
+  var defaultCoord = new Coordinate(mainPin.offsetLeft, mainPin.offsetTop);
 
 
   var setAddressCoord = function (isDisable) {
-    var pinCoordX = Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X));
+
+    var pinCoordX = Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X)) < 0 ? 0 : Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X));
     var pinCoordY = Math.floor((mainPin.offsetTop + mainPinSize.HEIGHT + mainPinSize.ARROW_HEIGHT));
 
     if (isDisable) {
@@ -103,8 +104,8 @@
 
   window.mainPin = {
     setDefault: function () {
-      mainPin.style.left = defaultCood.x + 'px';
-      mainPin.style.top = defaultCood.y + 'px';
+      mainPin.style.left = defaultCoord.x + 'px';
+      mainPin.style.top = defaultCoord.y + 'px';
     }
   };
 
