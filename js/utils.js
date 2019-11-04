@@ -90,11 +90,11 @@
     },
 
     removeErrorMassage: function () {
-      document.querySelector('.error').remove();
+      document.body.querySelector('.error').remove();
     },
 
     removeSuccessMassage: function () {
-      document.querySelector('.success').remove();
+      document.body.querySelector('.success').remove();
     }
   };
 
