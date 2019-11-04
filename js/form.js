@@ -135,6 +135,7 @@
 
   housingType.addEventListener('change', function (evt) {
     price.setAttribute('min', priceByHousingType[evt.target.value]);
+    price.setAttribute('placeholder', priceByHousingType[evt.target.value]);
   });
 
   rooms.addEventListener('change', validateRoomsAndCapacity);
