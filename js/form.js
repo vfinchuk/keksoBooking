@@ -214,6 +214,7 @@
 
   /**
    * Error handler for upload form data
+   * @param {string} errorMassage
    */
   var errorHandler = function (errorMassage) {
     window.popup.remove();
