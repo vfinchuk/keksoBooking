@@ -22,7 +22,10 @@
 
   var defaultCoord = new Coordinate(mainPin.offsetLeft, mainPin.offsetTop);
 
-
+  /**
+   * Add address coordinate in form address input
+   * @param {flag} isDisable set true when page disabled
+   */
   var setAddressCoord = function (isDisable) {
 
     var pinCoordX = Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X)) < 0 ? 0 : Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X));
@@ -36,6 +39,9 @@
     document.querySelector('#address').value = pinCoordX + ', ' + pinCoordY;
   };
 
+  /**
+   * Set pin location css styles
+   */
   var pinLocationHandler = function () {
 
     // check left and right sides
@@ -54,7 +60,9 @@
 
   };
 
-
+  /**
+   * map pin main moving event listener
+   */
   mainPin.addEventListener('mousedown', function (downEvt) {
     downEvt.preventDefault();
 
@@ -103,6 +111,9 @@
 
 
   window.mainPin = {
+    /**
+     * set default coordinate for main map pin
+     */
     setDefault: function () {
       mainPin.style.left = defaultCoord.x + 'px';
       mainPin.style.top = defaultCoord.y + 'px';

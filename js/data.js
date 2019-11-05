@@ -19,6 +19,13 @@
     }
   };
 
+  /**
+   * Init xhr config
+   * @param {object} xhr XMLHttpRequest
+   * @param {callback} onSuccess success callback
+   * @param {callback} onError error callback
+   * @return {*}
+   */
   function xhrInit(xhr, onSuccess, onError) {
     xhr.responseType = xhrConfig.RESPONSE_TYPE;
 
@@ -45,12 +52,22 @@
 
 
   window.data = {
+    /**
+     * Download data
+     * @param {callback} cbSuccess
+     * @param {callback} cbError
+     */
     download: function (cbSuccess, cbError) {
       var xhr = xhrInit(new XMLHttpRequest(), cbSuccess, cbError);
       xhr.open('GET', dataConfig.DOWNLOAD);
       xhr.send();
     },
-
+    /**
+     * Upload data
+     * @param {array} data
+     * @param {callback} cbSuccess
+     * @param {callback} cbError
+     */
     upload: function (data, cbSuccess, cbError) {
       var xhr = xhrInit(new XMLHttpRequest(), cbSuccess, cbError);
       xhr.open('POST', dataConfig.SAVE);

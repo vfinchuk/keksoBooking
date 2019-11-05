@@ -39,7 +39,9 @@
 
   var resetButton = orderForm.querySelector('.ad-form__reset');
 
-
+  /**
+   * validate title input
+   */
   var validateTitle = function () {
     var length = title.value.length;
 
@@ -54,6 +56,9 @@
     }
   };
 
+  /**
+   * validate price input
+   */
   var validatePrice = function () {
     var minValue = parseInt(price.getAttribute('min'), 10);
     var value = parseInt(price.value, 10);
@@ -69,6 +74,9 @@
     }
   };
 
+  /**
+   * validate rooms and capacity fields
+   */
   var validateRoomsAndCapacity = function () {
     var roomsAmount = parseInt(rooms.value, 10);
     var guestsAmount = parseInt(capacity.value, 10);
@@ -85,11 +93,19 @@
     }
   };
 
+  /**
+   * Set checkIn and checkOut selects
+   * @param {int} time
+   */
   var setCheckInAndOut = function (time) {
     checkIn.value = time;
     checkOut.value = time;
   };
 
+  /**
+   * Rendering photo
+   * @param {string} src
+   */
   var renderPhoto = function (src) {
     var photo = document.querySelector('#photo').content.querySelector('div');
     var template = photo.cloneNode(true);
@@ -97,6 +113,11 @@
     document.querySelector('.ad-form__photo-container').insertAdjacentElement('beforeend', template);
   };
 
+  /**
+   * Read files from input[type="file"]
+   * @param {file} file
+   * @param {callback} callback
+   */
   var readFile = function (file, callback) {
     if (file) {
       var reader = new FileReader();
@@ -114,14 +135,14 @@
   };
 
 
-  // functions for validate form when page render
+  /* Validate form functions after rendering page  */
   validateTitle();
   validatePrice();
   price.setAttribute('min', priceByHousingType[housingType.value]);
   validateRoomsAndCapacity();
 
 
-  // Form event listeners
+  /* Event listener for avatar file input */
   avatar.addEventListener('change', function (evt) {
     var file = evt.target.files[0];
     readFile(file, function (evtFile) {
@@ -129,27 +150,35 @@
     });
   });
 
+  /* Validate title input event listener */
   title.addEventListener('input', window.utils.debounce(validateTitle));
 
+  /* Validate price input event listener */
   price.addEventListener('input', window.utils.debounce(validatePrice));
 
+  /* Validate house type event listener */
   housingType.addEventListener('change', function (evt) {
     price.setAttribute('min', priceByHousingType[evt.target.value]);
     price.setAttribute('placeholder', priceByHousingType[evt.target.value]);
   });
 
+  /* Validate rooms event listener */
   rooms.addEventListener('change', validateRoomsAndCapacity);
 
+  /* Validate capacity event listener */
   capacity.addEventListener('change', validateRoomsAndCapacity);
 
+  /* Validate checkIn event listener */
   checkIn.addEventListener('change', function (evt) {
     setCheckInAndOut(evt.target.value);
   });
 
+  /* Validate checkOut event listener */
   checkOut.addEventListener('change', function (evt) {
     setCheckInAndOut(evt.target.value);
   });
 
+  /* Add images event listener */
   images.addEventListener('change', function (evt) {
     var files = evt.target.files;
 
@@ -160,6 +189,7 @@
     });
   });
 
+  /* Reset button event listener */
   resetButton.addEventListener('click', function () {
     var resetButtonHandler = function () {
       window.form.disable();
@@ -168,7 +198,9 @@
     resetButton.removeEventListener('click', resetButtonHandler);
   });
 
-
+  /**
+   * Success handler for upload form data
+   */
   var successHandler = function () {
     window.utils.successMassage('Заказ отправлен!', function () {
       orderForm.reset();
@@ -180,6 +212,9 @@
     });
   };
 
+  /**
+   * Error handler for upload form data
+   */
   var errorHandler = function (errorMassage) {
     window.popup.remove();
     window.utils.errorMassage(errorMassage, function () {
@@ -187,6 +222,9 @@
     });
   };
 
+  /**
+   * Submit form event listener
+   */
   orderForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.data.upload(new FormData(orderForm), successHandler, errorHandler);
@@ -200,7 +238,9 @@
       'house': 'Дом',
       'bungalo': 'Бунгало'
     },
-
+    /**
+     * Enable form
+     */
     enable: function () {
       orderForm.classList.remove('ad-form--disabled');
 
@@ -209,7 +249,9 @@
         fieldset.disabled = false;
       });
     },
-
+    /**
+     * Disable form
+     */
     disable: function () {
       orderForm.classList.add('ad-form--disabled');
 
@@ -227,8 +269,7 @@
     }
   };
 
-
-  // Disabled form when page render
+  /* Disabled form when page render */
   window.form.disable();
 
 })();

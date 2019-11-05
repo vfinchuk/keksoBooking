@@ -24,19 +24,38 @@
 
   var pinsData = [];
 
-
+  /**
+   * Check housing type
+   * @param {object} pin
+   * @return {boolean}
+   */
   var checkHousingType = function (pin) {
     return housingType.value === 'any' ? true : housingType.value === pin.offer.type;
   };
 
+  /**
+   * Check housing rooms
+   * @param {object} pin
+   * @return {boolean}
+   */
   var checkHousingRooms = function (pin) {
     return housingRooms.value === 'any' ? true : parseInt(housingRooms.value, 10) === pin.offer.rooms;
   };
 
+  /**
+   * Check housing guests
+   * @param {object} pin
+   * @return {boolean}
+   */
   var checkHousingGuests = function (pin) {
     return housingGuests.value === 'any' ? true : parseInt(housingGuests.value, 10) === pin.offer.guests;
   };
 
+  /**
+   * Check housing price
+   * @param {object} pin
+   * @return {boolean}
+   */
   var checkHousingPrice = function (pin) {
     var offerPrice = pin.offer.price;
 
@@ -55,6 +74,11 @@
     }
   };
 
+  /**
+   * Check housing guests
+   * @param {object} pin
+   * @return {boolean}
+   */
   var checkHousingFeatures = function (pin) {
     return Array.from(housingFeatures.children)
       .filter(function (featureItem) {
@@ -68,7 +92,9 @@
       });
   };
 
-
+  /**
+   * Filter form event listener
+   */
   filtersForm.addEventListener('change', window.utils.debounce(function () {
     var filterPins = pinsData.filter(function (pin) {
       return (
@@ -82,7 +108,9 @@
     window.pins.render(filterPins);
   }));
 
-
+  /**
+   * Filter form event listener
+   */
   filtersForm.addEventListener('keydown', function (evt) {
     window.utils.onEnterPress(evt, function () {
       var filterPins = pinsData.filter(function (pin) {
@@ -100,10 +128,16 @@
 
 
   window.filter = {
+    /**
+     * Copy data for filters
+     * @param {array} data
+     */
     copyData: function (data) {
       pinsData = data.slice();
     },
-
+    /**
+     * Enable filter form
+     */
     enable: function () {
       filtersForm.classList.remove('map__filters--disabled');
       filtersForm.querySelector('fieldset').disabled = false;
@@ -114,7 +148,9 @@
         select.disabled = false;
       });
     },
-
+    /**
+     * Disable filter form
+     */
     disable: function () {
       filtersForm.classList.add('map__filters--disabled');
       filtersForm.querySelector('fieldset').disabled = true;
