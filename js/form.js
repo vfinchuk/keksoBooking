@@ -77,7 +77,7 @@
   /**
    * validate rooms and capacity fields
    */
-  var validateRoomsAndCapacity = function () {
+  var validateRoomsAndCapacityHandler = function () {
     var roomsAmount = parseInt(rooms.value, 10);
     var guestsAmount = parseInt(capacity.value, 10);
 
@@ -139,7 +139,7 @@
   validateTitle();
   validatePrice();
   price.setAttribute('min', PriceByHousingType[housingType.value]);
-  validateRoomsAndCapacity();
+  validateRoomsAndCapacityHandler();
 
 
   /* Event listener for avatar file input */
@@ -163,10 +163,10 @@
   });
 
   /* Validate rooms event listener */
-  rooms.addEventListener('change', validateRoomsAndCapacity);
+  rooms.addEventListener('change', validateRoomsAndCapacityHandler);
 
   /* Validate capacity event listener */
-  capacity.addEventListener('change', validateRoomsAndCapacity);
+  capacity.addEventListener('change', validateRoomsAndCapacityHandler);
 
   /* Validate checkIn event listener */
   checkIn.addEventListener('change', function (evt) {
