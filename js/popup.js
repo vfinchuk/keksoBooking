@@ -5,7 +5,7 @@
   var housingTypeDictionary = window.form.housingTypeDictionary;
 
 
-  var cardTemplate = function (data) {
+  var getCardTemplate = function (data) {
     var offer = data.offer;
     var avatar = data.author.avatar;
 
@@ -69,7 +69,7 @@
       card.remove();
     }
 
-    var template = cardTemplate(data);
+    var template = getCardTemplate(data);
     insertCardTemplate(template);
     document.addEventListener('click', onPopupEscPress);
     closePopupHandler();

@@ -42,7 +42,7 @@
   /**
    * Set pin location css styles
    */
-  var pinLocationHandler = function () {
+  var setPinLocation = function () {
 
     // check left and right sides
     if (mainPin.offsetLeft <= 0 - MAIN_PIN_CENTER_X) {
@@ -83,7 +83,7 @@
       mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
 
       setAddressCoordinate();
-      pinLocationHandler();
+      setPinLocation();
     };
 
     var mouseUpHandler = function (upEvt) {

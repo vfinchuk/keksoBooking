@@ -128,7 +128,7 @@
         callback(evt);
       };
       reader.onerror = function () {
-        window.utils.errorMassage('Произошла ошибка загрузки', false);
+        window.utils.errorMessage('Произошла ошибка загрузки', false);
         return false;
       };
     }
@@ -202,13 +202,13 @@
    * Success handler for upload form data
    */
   var successHandler = function () {
-    window.utils.successMassage('Заказ отправлен!', function () {
+    window.utils.successMessage('Заказ отправлен!', function () {
       orderForm.reset();
       window.popup.remove();
       window.form.disable();
       window.map.disable();
       window.mainPin.setDefault();
-      window.utils.removeSuccessMassage();
+      window.utils.removeSuccessMessage();
     });
   };
 
@@ -218,8 +218,8 @@
    */
   var errorHandler = function (errorMassage) {
     window.popup.remove();
-    window.utils.errorMassage(errorMassage, function () {
-      window.utils.removeErrorMassage();
+    window.utils.errorMessage(errorMassage, function () {
+      window.utils.removeErrorMessage();
     });
   };
 

@@ -15,11 +15,11 @@
 
   /**
    * Error handler for map init
-   * @param {string} errorMassage
+   * @param {string} errorMessage
    */
-  var errorHandler = function (errorMassage) {
-    window.utils.errorMassage(errorMassage, function () {
-      window.utils.removeErrorMassage();
+  var errorHandler = function (errorMessage) {
+    window.utils.errorMessage(errorMessage, function () {
+      window.utils.removeErrorMessage();
       window.data.download(successHandler, errorHandler);
     });
   };

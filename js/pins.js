@@ -9,7 +9,7 @@
     HEIGHT: 70
   };
 
-  var pinTemplate = function (data) {
+  var getPinTemplate = function (data) {
     var template = document.querySelector('#pin').content.querySelector('.map__pin');
     template = template.cloneNode(true);
 
@@ -33,7 +33,7 @@
       var countPins = data.length < COUNT_PINS ? data.length : COUNT_PINS;
 
       for (var i = 0; i < countPins; i++) {
-        fragment.appendChild(pinTemplate(data[i]));
+        fragment.appendChild(getPinTemplate(data[i]));
       }
       pinsWrap.appendChild(fragment);
 

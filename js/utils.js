@@ -47,11 +47,11 @@
       };
     },
 
-    errorMassage: function (massage, errorButtonHandler) {
+    errorMessage: function (message, errorButtonHandler) {
       var template = document.querySelector('#error').content.querySelector('.error');
       template = template.cloneNode(true);
 
-      template.querySelector('.error__message').textContent = massage;
+      template.querySelector('.error__message').textContent = message;
 
       var errorButton = template.querySelector('.error__button');
 
@@ -69,11 +69,11 @@
       document.body.insertAdjacentElement('afterbegin', template);
     },
 
-    successMassage: function (massage, successHandler) {
+    successMessage: function (message, successHandler) {
       var template = document.querySelector('#success').content.querySelector('.success');
       template = template.cloneNode(true);
 
-      template.querySelector('.success__message').textContent = massage;
+      template.querySelector('.success__message').textContent = message;
       document.body.insertAdjacentElement('afterbegin', template);
 
       var successNode = document.querySelector('.success');
@@ -89,11 +89,11 @@
       });
     },
 
-    removeErrorMassage: function () {
+    removeErrorMessage: function () {
       document.body.querySelector('.error').remove();
     },
 
-    removeSuccessMassage: function () {
+    removeSuccessMessage: function () {
       document.body.querySelector('.success').remove();
     }
   };
