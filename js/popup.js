@@ -4,12 +4,13 @@
 
   var housingTypeDictionary = window.form.housingTypeDictionary;
 
+  var cardTemplateElement = document.querySelector('#card').content.querySelector('.map__card');
+  var mapFiltersContainer = document.querySelector('.map__filters-container');
 
   var getCardTemplate = function (data) {
     var offer = data.offer;
     var avatar = data.author.avatar;
 
-    var cardTemplateElement = document.querySelector('#card').content.querySelector('.map__card');
     var template = cardTemplateElement.cloneNode(true);
 
     template.querySelector('.popup__avatar').src = avatar;
@@ -51,7 +52,7 @@
 
 
   var insertCardTemplate = function (template) {
-    document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', template);
+    mapFiltersContainer.insertAdjacentElement('beforebegin', template);
   };
 
 

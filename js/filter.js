@@ -16,6 +16,9 @@
 
   var filtersForm = document.querySelector('.map__filters');
 
+  var filtersFormFieldset = filtersForm.querySelector('fieldset');
+
+
   var housingType = filtersForm.querySelector('#housing-type');
   var housingPrice = filtersForm.querySelector('#housing-price');
   var housingRooms = filtersForm.querySelector('#housing-rooms');
@@ -140,7 +143,7 @@
      */
     enable: function () {
       filtersForm.classList.remove('map__filters--disabled');
-      filtersForm.querySelector('fieldset').disabled = false;
+      filtersFormFieldset.disabled = false;
 
       var selects = filtersForm.querySelectorAll('select');
 
@@ -153,7 +156,7 @@
      */
     disable: function () {
       filtersForm.classList.add('map__filters--disabled');
-      filtersForm.querySelector('fieldset').disabled = true;
+      filtersFormFieldset.disabled = true;
 
       var selects = filtersForm.querySelectorAll('select');
 

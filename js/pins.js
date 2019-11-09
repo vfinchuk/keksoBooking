@@ -9,9 +9,11 @@
     HEIGHT: 70
   };
 
+  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+  var pinsWrap = document.querySelector('.map__pins');
+
   var getPinTemplate = function (data) {
-    var template = document.querySelector('#pin').content.querySelector('.map__pin');
-    template = template.cloneNode(true);
+    var template = pinTemplate.cloneNode(true);
 
     template.querySelector('img').src = data.author.avatar;
     template.querySelector('img').alt = data.offer.title;
@@ -29,7 +31,6 @@
       window.popup.remove();
 
       var fragment = document.createDocumentFragment();
-      var pinsWrap = document.querySelector('.map__pins');
       var countPins = data.length < COUNT_PINS ? data.length : COUNT_PINS;
 
       for (var i = 0; i < countPins; i++) {

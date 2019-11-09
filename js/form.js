@@ -19,6 +19,8 @@
     'palace': 10000
   };
 
+  var photoTemplate = document.querySelector('#photo');
+
   var orderForm = document.querySelector('.ad-form');
 
   var title = orderForm.querySelector('#title');
@@ -107,7 +109,7 @@
    * @param {string} src
    */
   var renderPhoto = function (src) {
-    var photo = document.querySelector('#photo').content.querySelector('div');
+    var photo = photoTemplate.content.querySelector('div');
     var template = photo.cloneNode(true);
     template.querySelector('img').src = src;
     document.querySelector('.ad-form__photo-container').insertAdjacentElement('beforeend', template);

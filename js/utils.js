@@ -1,6 +1,9 @@
 'use strict';
 (function () {
 
+  var errorMassageTemplateElement = document.querySelector('#error').content.querySelector('.error');
+  var successMassageTemplateElement = document.querySelector('#success').content.querySelector('.success');
+
   var ButtonKey = {
     ENTER: 13,
     ESC: 27
@@ -48,8 +51,7 @@
     },
 
     errorMessage: function (message, errorButtonHandler) {
-      var template = document.querySelector('#error').content.querySelector('.error');
-      template = template.cloneNode(true);
+      var template = errorMassageTemplateElement.cloneNode(true);
 
       template.querySelector('.error__message').textContent = message;
 
@@ -70,8 +72,7 @@
     },
 
     successMessage: function (message, successHandler) {
-      var template = document.querySelector('#success').content.querySelector('.success');
-      template = template.cloneNode(true);
+      var template = successMassageTemplateElement.cloneNode(true);
 
       template.querySelector('.success__message').textContent = message;
       document.body.insertAdjacentElement('afterbegin', template);

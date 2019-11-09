@@ -21,6 +21,8 @@
 
   var defaultCoordinate = new Coordinate(mainPin.offsetLeft, mainPin.offsetTop);
 
+  var addressInput = document.querySelector('#address');
+
   /**
    * Add address coordinate in form address input
    * @param {flag} isDisable set true when page disabled
@@ -35,7 +37,7 @@
       pinCoordinateY = Math.floor(mainPin.offsetLeft + MAIN_PIN_CENTER_Y);
     }
 
-    document.querySelector('#address').value = pinCoordinateX + ', ' + pinCoordinateY;
+    addressInput.value = pinCoordinateX + ', ' + pinCoordinateY;
   };
 
   /**
