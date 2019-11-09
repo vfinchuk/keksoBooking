@@ -4,12 +4,12 @@
 
   var DEFAULT_AVATAR_IMG = 'img/muffin-grey.svg';
 
-  var titleLength = {
+  var TitleLength = {
     MIN: 30,
     MAX: 100
   };
 
-  var priceByHousingType = {
+  var PriceByHousingType = {
     'bungalo': 0,
     'flat': 1000,
     'house': 5000,
@@ -47,9 +47,9 @@
 
     if (length === 0) {
       title.setCustomValidity('Поле обязательное для заполнения');
-    } else if (length > titleLength.MAX) {
+    } else if (length > TitleLength.MAX) {
       title.setCustomValidity('Заголовок обьявления слишком длинный');
-    } else if (length < titleLength.MIN) {
+    } else if (length < TitleLength.MIN) {
       title.setCustomValidity('Заголовок обьявления слишком короткий');
     } else {
       title.setCustomValidity('');
@@ -138,7 +138,7 @@
   /* Validate form functions after rendering page  */
   validateTitle();
   validatePrice();
-  price.setAttribute('min', priceByHousingType[housingType.value]);
+  price.setAttribute('min', PriceByHousingType[housingType.value]);
   validateRoomsAndCapacity();
 
 
@@ -158,8 +158,8 @@
 
   /* Validate house type event listener */
   housingType.addEventListener('change', function (evt) {
-    price.setAttribute('min', priceByHousingType[evt.target.value]);
-    price.setAttribute('placeholder', priceByHousingType[evt.target.value]);
+    price.setAttribute('min', PriceByHousingType[evt.target.value]);
+    price.setAttribute('placeholder', PriceByHousingType[evt.target.value]);
   });
 
   /* Validate rooms event listener */

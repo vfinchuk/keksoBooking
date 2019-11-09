@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 
-  var BUTTON_KEY = {
+  var ButtonKey = {
     ENTER: 13,
     ESC: 27
   };
@@ -22,13 +22,13 @@
     },
 
     onEnterPress: function (evt, action) {
-      if (evt.keyCode === BUTTON_KEY.ENTER) {
+      if (evt.keyCode === ButtonKey.ENTER) {
         action();
       }
     },
 
     onEscPress: function (evt, action) {
-      if (evt.keyCode === BUTTON_KEY.ESC) {
+      if (evt.keyCode === ButtonKey.ESC) {
         action();
       }
     },
@@ -97,7 +97,5 @@
       document.body.querySelector('.success').remove();
     }
   };
-
-  // ...
 
 })();

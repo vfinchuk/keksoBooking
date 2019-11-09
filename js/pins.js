@@ -4,7 +4,7 @@
 
   var COUNT_PINS = 5;
 
-  var sizePin = {
+  var SizePin = {
     WIDTH: 50,
     HEIGHT: 70
   };
@@ -16,8 +16,8 @@
     template.querySelector('img').src = data.author.avatar;
     template.querySelector('img').alt = data.offer.title;
 
-    template.style.left = (data.location.x - sizePin.WIDTH / 2) + 'px';
-    template.style.top = (data.location.y - sizePin.HEIGHT) + 'px';
+    template.style.left = (data.location.x - SizePin.WIDTH / 2) + 'px';
+    template.style.top = (data.location.y - SizePin.HEIGHT) + 'px';
 
     return template;
   };

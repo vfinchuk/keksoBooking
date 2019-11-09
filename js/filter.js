@@ -2,13 +2,13 @@
 
 (function () {
 
-  var price = {
-    select: {
+  var Price = {
+    SELECT: {
       LOW: 'low',
       MIDDLE: 'middle',
       HIGH: 'high'
     },
-    value: {
+    VALUE: {
       MIN: 10000,
       MAX: 50000
     }
@@ -60,14 +60,14 @@
     var offerPrice = pin.offer.price;
 
     switch (housingPrice.value) {
-      case price.select.LOW:
-        return offerPrice < price.value.MIN;
+      case Price.SELECT.LOW:
+        return offerPrice < Price.VALUE.MIN;
 
-      case price.select.MIDDLE:
-        return offerPrice >= price.value.MIN && offerPrice <= price.value.MAX;
+      case Price.SELECT.MIDDLE:
+        return offerPrice >= Price.VALUE.MIN && offerPrice <= Price.VALUE.MAX;
 
-      case price.select.HIGH:
-        return offerPrice > price.value.MAX;
+      case Price.SELECT.HIGH:
+        return offerPrice > Price.VALUE.MAX;
 
       default:
         return offerPrice;

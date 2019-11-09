@@ -4,7 +4,7 @@
 
   var Coordinate = window.utils.Coordinate;
 
-  var mainPinSize = {
+  var MainPinSize = {
     HEIGHT: 65,
     WIDTH: 65,
     ARROW_HEIGHT: 22
@@ -13,8 +13,8 @@
   var Y_MIN_DIAPASONE = 130;
   var Y_MAX_DIAPASONE = 630;
 
-  var MAIN_PIN_CENTER_X = (mainPinSize.WIDTH / 2);
-  var MAIN_PIN_CENTER_Y = (mainPinSize.HEIGHT / 2);
+  var MAIN_PIN_CENTER_X = (MainPinSize.WIDTH / 2);
+  var MAIN_PIN_CENTER_Y = (MainPinSize.HEIGHT / 2);
 
 
   var MAP_WIDTH = document.querySelector('.map').offsetWidth;
@@ -29,7 +29,7 @@
   var setAddressCoordinate = function (isDisable) {
 
     var pinCoordinateX = Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X)) < 0 ? 0 : Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X));
-    var pinCoordinateY = Math.floor((mainPin.offsetTop + mainPinSize.HEIGHT + mainPinSize.ARROW_HEIGHT));
+    var pinCoordinateY = Math.floor((mainPin.offsetTop + MainPinSize.HEIGHT + MainPinSize.ARROW_HEIGHT));
 
     if (isDisable) {
       pinCoordinateX = Math.floor(mainPin.offsetLeft + MAIN_PIN_CENTER_X);
@@ -52,10 +52,10 @@
     }
 
     // check top and bottom sides
-    if (mainPin.offsetTop + mainPinSize.HEIGHT <= Y_MIN_DIAPASONE) {
-      mainPin.style.top = Math.floor(Y_MIN_DIAPASONE - mainPinSize.HEIGHT) + 'px';
-    } else if (mainPin.offsetTop + mainPinSize.HEIGHT >= Y_MAX_DIAPASONE) {
-      mainPin.style.top = Math.floor(Y_MAX_DIAPASONE - mainPinSize.HEIGHT) + 'px';
+    if (mainPin.offsetTop + MainPinSize.HEIGHT <= Y_MIN_DIAPASONE) {
+      mainPin.style.top = Math.floor(Y_MIN_DIAPASONE - MainPinSize.HEIGHT) + 'px';
+    } else if (mainPin.offsetTop + MainPinSize.HEIGHT >= Y_MAX_DIAPASONE) {
+      mainPin.style.top = Math.floor(Y_MAX_DIAPASONE - MainPinSize.HEIGHT) + 'px';
     }
 
   };
