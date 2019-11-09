@@ -42,7 +42,7 @@
     });
 
     xhr.addEventListener('timeout', function () {
-      onError(xhrConfig.ERROR_MASSAGE.TIMEOUT + ' ' + (xhr.timeout / 1000) + ' с');
+      onError(XhrConfig.ERROR_MASSAGE.TIMEOUT + ' ' + (xhr.timeout / 1000) + ' с');
     });
 
     xhr.timeout = XhrConfig.TIMEOUT;
