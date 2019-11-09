@@ -23,9 +23,9 @@
     var fragmentFeatures = document.createDocumentFragment();
 
     offer.features.forEach(function (feature) {
-      var li = document.createElement('li');
-      li.classList.add('popup__feature', 'popup__feature--' + feature);
-      fragmentFeatures.appendChild(li);
+      var listItem = document.createElement('li');
+      listItem.classList.add('popup__feature', 'popup__feature--' + feature);
+      fragmentFeatures.appendChild(listItem);
     });
     template.querySelector('.popup__features').innerHTML = '';
     template.querySelector('.popup__features').appendChild(fragmentFeatures);
@@ -35,13 +35,13 @@
     var fragmentPhotos = document.createDocumentFragment();
 
     offer.photos.forEach(function (photo) {
-      var img = document.createElement('img');
-      img.classList.add('popup__photo');
-      img.src = photo;
-      img.width = 45;
-      img.height = 45;
-      img.alt = 'Фотография жилья';
-      fragmentPhotos.appendChild(img);
+      var image = document.createElement('img');
+      image.classList.add('popup__photo');
+      image.src = photo;
+      image.width = 45;
+      image.height = 45;
+      image.alt = 'Фотография жилья';
+      fragmentPhotos.appendChild(image);
     });
     template.querySelector('.popup__photos').innerHTML = '';
     template.querySelector('.popup__photos').appendChild(fragmentPhotos);

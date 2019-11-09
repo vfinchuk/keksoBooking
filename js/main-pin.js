@@ -20,23 +20,23 @@
   var MAP_WIDTH = document.querySelector('.map').offsetWidth;
   var mainPin = document.querySelector('.map__pin--main');
 
-  var defaultCoord = new Coordinate(mainPin.offsetLeft, mainPin.offsetTop);
+  var defaultCoordinate = new Coordinate(mainPin.offsetLeft, mainPin.offsetTop);
 
   /**
    * Add address coordinate in form address input
    * @param {flag} isDisable set true when page disabled
    */
-  var setAddressCoord = function (isDisable) {
+  var setAddressCoordinate = function (isDisable) {
 
-    var pinCoordX = Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X)) < 0 ? 0 : Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X));
-    var pinCoordY = Math.floor((mainPin.offsetTop + mainPinSize.HEIGHT + mainPinSize.ARROW_HEIGHT));
+    var pinCoordinateX = Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X)) < 0 ? 0 : Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X));
+    var pinCoordinateY = Math.floor((mainPin.offsetTop + mainPinSize.HEIGHT + mainPinSize.ARROW_HEIGHT));
 
     if (isDisable) {
-      pinCoordX = Math.floor(mainPin.offsetLeft + MAIN_PIN_CENTER_X);
-      pinCoordY = Math.floor(mainPin.offsetLeft + MAIN_PIN_CENTER_Y);
+      pinCoordinateX = Math.floor(mainPin.offsetLeft + MAIN_PIN_CENTER_X);
+      pinCoordinateY = Math.floor(mainPin.offsetLeft + MAIN_PIN_CENTER_Y);
     }
 
-    document.querySelector('#address').value = pinCoordX + ', ' + pinCoordY;
+    document.querySelector('#address').value = pinCoordinateX + ', ' + pinCoordinateY;
   };
 
   /**
@@ -66,23 +66,23 @@
   mainPin.addEventListener('mousedown', function (downEvt) {
     downEvt.preventDefault();
 
-    var startCoord = new Coordinate(downEvt.clientX, downEvt.clientY);
+    var startCoordinate = new Coordinate(downEvt.clientX, downEvt.clientY);
 
     var mouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
 
       var shift = {
-        x: startCoord.x - moveEvt.clientX,
-        y: startCoord.y - moveEvt.clientY
+        x: startCoordinate.x - moveEvt.clientX,
+        y: startCoordinate.y - moveEvt.clientY
       };
 
-      startCoord.setX(moveEvt.clientX);
-      startCoord.setY(moveEvt.clientY);
+      startCoordinate.setX(moveEvt.clientX);
+      startCoordinate.setY(moveEvt.clientY);
 
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
       mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
 
-      setAddressCoord();
+      setAddressCoordinate();
       pinLocationHandler();
     };
 
@@ -107,7 +107,7 @@
   });
 
 
-  setAddressCoord(true);
+  setAddressCoordinate(true);
 
 
   window.mainPin = {
@@ -115,8 +115,8 @@
      * set default coordinate for main map pin
      */
     setDefault: function () {
-      mainPin.style.left = defaultCoord.x + 'px';
-      mainPin.style.top = defaultCoord.y + 'px';
+      mainPin.style.left = defaultCoordinate.x + 'px';
+      mainPin.style.top = defaultCoordinate.y + 'px';
     }
   };
 
