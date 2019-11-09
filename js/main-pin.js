@@ -2,7 +2,8 @@
 
 (function () {
 
-  var Coordinate = window.utils.Coordinate;
+  var Y_MIN_DIAPASONE = 130;
+  var Y_MAX_DIAPASONE = 630;
 
   var MainPinSize = {
     HEIGHT: 65,
@@ -10,15 +11,13 @@
     ARROW_HEIGHT: 22
   };
 
-  var Y_MIN_DIAPASONE = 130;
-  var Y_MAX_DIAPASONE = 630;
-
   var MAIN_PIN_CENTER_X = (MainPinSize.WIDTH / 2);
   var MAIN_PIN_CENTER_Y = (MainPinSize.HEIGHT / 2);
 
-
   var MAP_WIDTH = document.querySelector('.map').offsetWidth;
   var mainPin = document.querySelector('.map__pin--main');
+
+  var Coordinate = window.utils.Coordinate;
 
   var defaultCoordinate = new Coordinate(mainPin.offsetLeft, mainPin.offsetTop);
 

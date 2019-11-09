@@ -4,6 +4,9 @@
 
   var DEFAULT_AVATAR_IMG = 'img/muffin-grey.svg';
 
+  var MAX_GUESTS_AMOUNT = 100;
+  var MAX_PRICE = 1000000;
+
   var TitleLength = {
     MIN: 30,
     MAX: 100
@@ -15,9 +18,6 @@
     'house': 5000,
     'palace': 10000
   };
-
-  var MAX_GUESTS_AMOUNT = 100;
-  var MAX_PRICE = 1000000;
 
   var orderForm = document.querySelector('.ad-form');
 
