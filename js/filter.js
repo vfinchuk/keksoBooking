@@ -82,7 +82,7 @@
   var checkHousingFeatures = function (pin) {
     return Array.from(housingFeatures.children)
       .filter(function (featureItem) {
-        return featureItem.checked === true;
+        return featureItem.checked;
       })
       .map(function (item) {
         return item.value;
