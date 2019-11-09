@@ -78,6 +78,7 @@
 
   var onPopupEscPress = function (evt) {
     window.utils.onEscPress(evt, window.popup.remove);
+    document.removeEventListener('click', onPopupEscPress);
   };
 
 
