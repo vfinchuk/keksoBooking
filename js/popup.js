@@ -71,14 +71,14 @@
 
     var template = getCardTemplate(data);
     insertCardTemplate(template);
-    document.addEventListener('click', onPopupEscPress);
+    document.addEventListener('click', escPressPopupHandler);
     closePopupHandler();
   };
 
 
-  var onPopupEscPress = function (evt) {
+  var escPressPopupHandler = function (evt) {
     window.utils.onEscPress(evt, window.popup.remove);
-    document.removeEventListener('click', onPopupEscPress);
+    document.removeEventListener('click', escPressPopupHandler);
   };
 
 
@@ -101,7 +101,7 @@
       var popup = document.querySelector('.popup');
       if (popup) {
         popup.remove();
-        document.removeEventListener('keydown', onPopupEscPress);
+        document.removeEventListener('keydown', escPressPopupHandler);
       }
     }
   };
