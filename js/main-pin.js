@@ -38,8 +38,7 @@
     // check top and bottom sides
     if ((mainPin.offsetTop + MainPinSize.HEIGHT + MainPinSize.ARROW_HEIGHT) <= Y_MIN_DIAPASONE) {
       mainPin.style.top = Math.floor(Y_MIN_DIAPASONE - MainPinSize.HEIGHT - MainPinSize.ARROW_HEIGHT) + 'px';
-    }
-    else if ((mainPin.offsetTop + MainPinSize.HEIGHT + MainPinSize.ARROW_HEIGHT) >= Y_MAX_DIAPASONE) {
+    } else if ((mainPin.offsetTop + MainPinSize.HEIGHT + MainPinSize.ARROW_HEIGHT) >= Y_MAX_DIAPASONE) {
       mainPin.style.top = Math.floor(Y_MAX_DIAPASONE - MainPinSize.HEIGHT - MainPinSize.ARROW_HEIGHT) + 'px';
     }
 
@@ -83,12 +82,18 @@
   });
 
 
-  mainPin.addEventListener('mousedown', function () {
+  // TODO Доработать !!!
+  var mainPinMouseClickHandler = function () {
     window.map.init();
+    window.mainPin.setAddressCoordinate();
+  };
+
+  mainPin.addEventListener('mousedown', function () {
+    mainPinMouseClickHandler();
   });
 
   mainPin.addEventListener('keydown', function (evt) {
-    window.utils.onEnterPress(evt, window.map.init);
+    window.utils.onEnterPress(evt, mainPinMouseClickHandler);
   });
 
 

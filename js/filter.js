@@ -99,16 +99,7 @@
    * Filter form event listener
    */
   filtersForm.addEventListener('change', window.utils.debounce(function () {
-    var filterPins = pinsData.filter(function (pin) {
-      return (
-        checkHousingType(pin) &&
-        checkHousingRooms(pin) &&
-        checkHousingGuests(pin) &&
-        checkHousingPrice(pin) &&
-        checkHousingFeatures(pin)
-      );
-    });
-    window.pins.render(filterPins);
+    window.filter.filterPinsHandler();
   }));
 
   /**
@@ -116,16 +107,7 @@
    */
   filtersForm.addEventListener('keydown', function (evt) {
     window.utils.onEnterPress(evt, function () {
-      var filterPins = pinsData.filter(function (pin) {
-        return (
-          checkHousingType(pin) &&
-          checkHousingRooms(pin) &&
-          checkHousingGuests(pin) &&
-          checkHousingPrice(pin) &&
-          checkHousingFeatures(pin)
-        );
-      });
-      window.pins.render(filterPins);
+      window.filter.filterPinsHandler();
     });
   });
 
@@ -166,6 +148,21 @@
       selects.forEach(function (select) {
         select.disabled = true;
       });
+    },
+    /**
+     * filtered pins handler
+     */
+    filterPinsHandler: function () {
+      var filterPins = pinsData.filter(function (pin) {
+        return (
+          checkHousingType(pin) &&
+          checkHousingRooms(pin) &&
+          checkHousingGuests(pin) &&
+          checkHousingPrice(pin) &&
+          checkHousingFeatures(pin)
+        );
+      });
+      window.pins.render(filterPins);
     }
   };
 

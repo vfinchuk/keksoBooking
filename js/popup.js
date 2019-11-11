@@ -72,14 +72,14 @@
 
     var template = getCardTemplate(data);
     insertCardTemplate(template);
-    document.addEventListener('click', escPressPopupHandler);
+    document.addEventListener('keydown', escPressPopupHandler);
     closePopupHandler();
   };
 
 
   var escPressPopupHandler = function (evt) {
     window.utils.onEscPress(evt, window.popup.remove);
-    document.removeEventListener('click', escPressPopupHandler);
+    document.removeEventListener('keydown', escPressPopupHandler);
   };
 
 
