@@ -36,10 +36,11 @@
     }
 
     // check top and bottom sides
-    if (mainPin.offsetTop + MainPinSize.HEIGHT <= Y_MIN_DIAPASONE) {
-      mainPin.style.top = Math.floor(Y_MIN_DIAPASONE - MainPinSize.HEIGHT) + 'px';
-    } else if (mainPin.offsetTop + MainPinSize.HEIGHT >= Y_MAX_DIAPASONE) {
-      mainPin.style.top = Math.floor(Y_MAX_DIAPASONE - MainPinSize.HEIGHT) + 'px';
+    if ((mainPin.offsetTop + MainPinSize.HEIGHT + MainPinSize.ARROW_HEIGHT) <= Y_MIN_DIAPASONE) {
+      mainPin.style.top = Math.floor(Y_MIN_DIAPASONE - MainPinSize.HEIGHT - MainPinSize.ARROW_HEIGHT) + 'px';
+    }
+    else if ((mainPin.offsetTop + MainPinSize.HEIGHT + MainPinSize.ARROW_HEIGHT) >= Y_MAX_DIAPASONE) {
+      mainPin.style.top = Math.floor(Y_MAX_DIAPASONE - MainPinSize.HEIGHT - MainPinSize.ARROW_HEIGHT) + 'px';
     }
 
   };
