@@ -24,23 +24,6 @@
   var addressInput = document.querySelector('#address');
 
   /**
-   * Add address coordinate in form address input
-   * @param {flag} isDisable set true when page disabled
-   */
-  var setAddressCoordinate = function (isDisable) {
-
-    var pinCoordinateX = Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X)) < 0 ? 0 : Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X));
-    var pinCoordinateY = Math.floor((mainPin.offsetTop + MainPinSize.HEIGHT + MainPinSize.ARROW_HEIGHT));
-
-    if (isDisable) {
-      pinCoordinateX = Math.floor(mainPin.offsetLeft + MAIN_PIN_CENTER_X);
-      pinCoordinateY = Math.floor(mainPin.offsetLeft + MAIN_PIN_CENTER_Y);
-    }
-
-    addressInput.value = pinCoordinateX + ', ' + pinCoordinateY;
-  };
-
-  /**
    * Set pin location css styles
    */
   var setPinLocation = function () {
@@ -83,7 +66,7 @@
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
       mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
 
-      setAddressCoordinate();
+      window.mainPin.setAddressCoordinate();
       setPinLocation();
     };
 
@@ -108,9 +91,6 @@
   });
 
 
-  setAddressCoordinate(true);
-
-
   window.mainPin = {
     /**
      * set default coordinate for main map pin
@@ -118,7 +98,25 @@
     setDefault: function () {
       mainPin.style.left = defaultCoordinate.x + 'px';
       mainPin.style.top = defaultCoordinate.y + 'px';
+    },
+    /**
+     * Add address coordinate in form address input
+     * @param {flag} isDisable set true when page disabled
+     */
+    setAddressCoordinate: function (isDisable) {
+
+      var pinCoordinateX = Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X)) < 0 ? 0 : Math.floor((mainPin.offsetLeft + MAIN_PIN_CENTER_X));
+      var pinCoordinateY = Math.floor((mainPin.offsetTop + MainPinSize.HEIGHT + MainPinSize.ARROW_HEIGHT));
+
+      if (isDisable) {
+        pinCoordinateX = Math.floor(mainPin.offsetLeft + MAIN_PIN_CENTER_X);
+        pinCoordinateY = Math.floor(mainPin.offsetLeft + MAIN_PIN_CENTER_Y);
+      }
+
+      addressInput.value = pinCoordinateX + ', ' + pinCoordinateY;
     }
   };
+
+  window.mainPin.setAddressCoordinate(true);
 
 })();

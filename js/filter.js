@@ -131,6 +131,9 @@
 
 
   window.filter = {
+    reset: function () {
+      filtersForm.reset();
+    },
     /**
      * Copy data for filters
      * @param {array} data
@@ -165,5 +168,8 @@
       });
     }
   };
+
+  /* Disabled form when page render */
+  window.filter.disable();
 
 })();

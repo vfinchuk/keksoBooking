@@ -62,7 +62,7 @@
         errorButton.removeEventListener('click', errorButtonHandler);
       });
 
-      errorButton.addEventListener('keydown', function (evt) {
+      window.addEventListener('keydown', function (evt) {
         window.utils.onEscPress(evt, function () {
           errorButtonHandler();
         });
@@ -83,7 +83,7 @@
         successNode.removeEventListener('click', successHandler);
       });
 
-      successNode.addEventListener('keyodwn', function (evt) {
+      window.addEventListener('keydown', function (evt) {
         window.utils.onEscPress(evt, function () {
           successHandler();
         });

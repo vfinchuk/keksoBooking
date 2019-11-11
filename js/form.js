@@ -194,9 +194,15 @@
   /* Reset button event listener */
   resetButton.addEventListener('click', function () {
     var resetButtonHandler = function () {
+      orderForm.reset();
+      window.popup.remove();
       window.form.disable();
+      window.filter.reset();
       window.map.disable();
+      window.mainPin.setDefault();
+      window.mainPin.setAddressCoordinate(true);
     };
+    resetButtonHandler();
     resetButton.removeEventListener('click', resetButtonHandler);
   });
 
@@ -204,12 +210,14 @@
    * Success handler for upload form data
    */
   var successHandler = function () {
+    window.popup.remove();
+
     window.utils.successMessage('Заказ отправлен!', function () {
       orderForm.reset();
-      window.popup.remove();
       window.form.disable();
       window.map.disable();
       window.mainPin.setDefault();
+      window.mainPin.setAddressCoordinate(true);
       window.utils.removeSuccessMessage();
     });
   };
