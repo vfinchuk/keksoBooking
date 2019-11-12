@@ -83,21 +83,34 @@
 
 
   // TODO Доработать !!!
-  var mainPinMouseClickHandler = function () {
-    window.map.init();
-    window.mainPin.setAddressCoordinate();
-  };
-
-  mainPin.addEventListener('mousedown', function () {
-    mainPinMouseClickHandler();
-  });
-
-  mainPin.addEventListener('keydown', function (evt) {
-    window.utils.onEnterPress(evt, mainPinMouseClickHandler);
-  });
 
 
   window.mainPin = {
+    mainPinClicked: false,
+
+    firsClickMainPin: function () {
+      var mainPinClickHandler = function () {
+        window.map.init();
+        window.mainPin.setAddressCoordinate();
+      };
+
+      mainPin.addEventListener('mousedown', function () {
+        if (!window.mainPin.mainPinClicked) {
+          mainPinClickHandler();
+          window.mainPin.mainPinClicked = true;
+        }
+      }, {once: true});
+
+      mainPin.addEventListener('keydown', function (evt) {
+        window.utils.onEnterPress(evt, function () {
+          if (!window.mainPin.mainPinClicked) {
+            mainPinClickHandler();
+            window.mainPin.mainPinClicked = true;
+          }
+        });
+      }, {once: true});
+
+    },
     /**
      * set default coordinate for main map pin
      */
@@ -123,6 +136,7 @@
     }
   };
 
+  window.mainPin.firsClickMainPin();
   window.mainPin.setAddressCoordinate(true);
 
 })();

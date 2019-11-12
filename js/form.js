@@ -219,6 +219,9 @@
       window.mainPin.setDefault();
       window.mainPin.setAddressCoordinate(true);
       window.utils.removeSuccessMessage();
+
+      window.mainPin.mainPinClicked = false;
+      window.mainPin.firsClickMainPin();
     });
   };
 
@@ -230,6 +233,9 @@
     window.popup.remove();
     window.utils.errorMessage(errorMassage, function () {
       window.utils.removeErrorMessage();
+
+      window.mainPin.mainPinClicked = false;
+      window.mainPin.firsClickMainPin();
     });
   };
 
