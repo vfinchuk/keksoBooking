@@ -3,6 +3,7 @@
 
   var errorMassageTemplateElement = document.querySelector('#error').content.querySelector('.error');
   var successMassageTemplateElement = document.querySelector('#success').content.querySelector('.success');
+  var mainElement = document.querySelector('main');
 
   var ButtonKey = {
     ENTER: 13,
@@ -52,30 +53,38 @@
 
     errorMessage: function (message, errorButtonHandler) {
       var template = errorMassageTemplateElement.cloneNode(true);
-
       template.querySelector('.error__message').textContent = message;
 
-      var errorButton = template.querySelector('.error__button');
+      mainElement.insertAdjacentElement('afterbegin', template);
 
-      errorButton.addEventListener('click', function () {
+      var errorButton = document.querySelector('.error__button');
+
+      errorButton.addEventListener('click', function (evt) {
+        evt.stopPropagation();
         errorButtonHandler();
         errorButton.removeEventListener('click', errorButtonHandler);
-      });
+      }, {once: true});
 
-      window.addEventListener('keydown', function (evt) {
+      document.addEventListener('keydown', function (evt) {
         window.utils.onEscPress(evt, function () {
           errorButtonHandler();
         });
-      });
+      }, {once: true});
 
-      document.body.insertAdjacentElement('afterbegin', template);
+
+      var errorElement = document.querySelector('.error');
+      errorElement.addEventListener('click', function (evt) {
+        evt.preventDefault();
+        errorButtonHandler();
+        errorElement.removeEventListener('click', errorButtonHandler);
+      }, {once: true});
     },
 
     successMessage: function (message, successHandler) {
       var template = successMassageTemplateElement.cloneNode(true);
 
       template.querySelector('.success__message').textContent = message;
-      document.body.insertAdjacentElement('afterbegin', template);
+      mainElement.insertAdjacentElement('afterbegin', template);
 
       var successNode = document.querySelector('.success');
       successNode.addEventListener('click', function () {
@@ -83,19 +92,26 @@
         successNode.removeEventListener('click', successHandler);
       });
 
-      window.addEventListener('keydown', function (evt) {
+      document.addEventListener('keydown', function (evt) {
         window.utils.onEscPress(evt, function () {
           successHandler();
-        });
+        }, {once: true});
       });
     },
 
     removeErrorMessage: function () {
-      document.body.querySelector('.error').remove();
+      var errorElement = mainElement.querySelector('.error');
+      if (errorElement) {
+        errorElement.remove();
+      }
+
     },
 
     removeSuccessMessage: function () {
-      document.body.querySelector('.success').remove();
+      var successElement = document.querySelector('.success');
+      if (successElement) {
+        successElement.remove();
+      }
     }
   };
 
