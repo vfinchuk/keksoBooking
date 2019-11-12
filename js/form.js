@@ -137,13 +137,6 @@
   };
 
 
-  /* Validate form functions after rendering page  */
-  validateTitle();
-  validatePrice();
-  price.setAttribute('min', PriceByHousingType[housingType.value]);
-  validateRoomsAndCapacityHandler();
-
-
   /* Event listener for avatar file input */
   avatar.addEventListener('change', function (evt) {
     var file = evt.target.files[0];
@@ -222,6 +215,8 @@
 
       window.mainPin.mainPinClicked = false;
       window.mainPin.firsClickMainPin();
+
+      window.form.defaultValidateFunctions();
     });
   };
 
@@ -236,6 +231,8 @@
 
       window.mainPin.mainPinClicked = false;
       window.mainPin.firsClickMainPin();
+
+      window.form.defaultValidateFunctions();
     });
   };
 
@@ -249,6 +246,14 @@
 
 
   window.form = {
+    defaultValidateFunctions: function () {
+      /* Validate form functions after rendering page  */
+      validateTitle();
+      validatePrice();
+      price.setAttribute('min', PriceByHousingType[housingType.value]);
+      validateRoomsAndCapacityHandler();
+    },
+
     housingTypeDictionary: {
       'palace': 'Дворец',
       'flat': 'Квартира',
@@ -289,6 +294,7 @@
   /* Disabled form when page render */
   window.form.disable();
 
+  window.form.defaultValidateFunctions();
 })();
 
 
