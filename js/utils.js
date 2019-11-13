@@ -51,52 +51,22 @@
       };
     },
 
-    showErrorMessage: function (message, errorMessageCb) {
+    getErrorMessage: function (message) {
       var template = errorMessageTemplateElement.cloneNode(true);
       template.querySelector('.error__message').textContent = message;
 
       mainElement.insertAdjacentElement('afterbegin', template);
 
-      var errorButton = document.querySelector('.error__button');
-
-      errorButton.addEventListener('click', function (evt) {
-        evt.stopPropagation();
-        errorMessageCb();
-        errorButton.removeEventListener('click', errorMessageCb);
-      }, {once: true});
-
-      document.addEventListener('keydown', function (evt) {
-        window.utils.onEscPress(evt, function () {
-          errorMessageCb();
-        });
-      }, {once: true});
-
-
-      var errorElement = document.querySelector('.error');
-      errorElement.addEventListener('click', function (evt) {
-        evt.preventDefault();
-        errorMessageCb();
-        errorElement.removeEventListener('click', errorMessageCb);
-      }, {once: true});
+      return template;
     },
 
-    showSuccessMessage: function (message, successHandler) {
+    getSuccessMessage: function (message) {
       var template = successMessageTemplateElement.cloneNode(true);
 
       template.querySelector('.success__message').textContent = message;
       mainElement.insertAdjacentElement('afterbegin', template);
 
-      var successNode = document.querySelector('.success');
-      successNode.addEventListener('click', function () {
-        successHandler();
-        successNode.removeEventListener('click', successHandler);
-      });
-
-      document.addEventListener('keydown', function (evt) {
-        window.utils.onEscPress(evt, function () {
-          successHandler();
-        }, {once: true});
-      });
+      return template;
     },
 
     removeErrorMessage: function () {

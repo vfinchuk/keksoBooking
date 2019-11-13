@@ -18,10 +18,32 @@
    * @param {string} errorMessage
    */
   var errorHandler = function (errorMessage) {
-    window.utils.showErrorMessage(errorMessage, function () {
+    var errorMessageElement = window.utils.getErrorMessage(errorMessage);
+
+    var errorMessageMouseHandler = function () {
       window.utils.removeErrorMessage();
       window.data.download(successHandler, errorHandler);
-    });
+
+      errorMessageElement.removeEventListener('click', errorMessageMouseHandler);
+      errorMessageButton.removeEventListener('click', errorMessageMouseHandler);
+      window.removeEventListener('keydown', errorMessageKeydownHandler);
+    };
+
+    var errorMessageKeydownHandler = function (evt) {
+      window.utils.onEscPress(evt, function () {
+        window.utils.removeErrorMessage();
+        window.data.download(successHandler, errorHandler);
+
+        window.removeEventListener('keydown', errorMessageKeydownHandler);
+      });
+    };
+
+    if (errorMessageElement) {
+      var errorMessageButton = errorMessageElement.querySelector('.error__button');
+      errorMessageElement.addEventListener('click', errorMessageMouseHandler);
+      errorMessageButton.addEventListener('click', errorMessageMouseHandler);
+      window.addEventListener('keydown', errorMessageKeydownHandler);
+    }
   };
 
   window.map = {

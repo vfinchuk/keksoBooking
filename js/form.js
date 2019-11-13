@@ -130,7 +130,7 @@
         callback(evt);
       };
       reader.onerror = function () {
-        window.utils.showErrorMessage('Произошла ошибка загрузки', false);
+        window.utils.getErrorMessage('Произошла ошибка загрузки', false);
         return false;
       };
     }
@@ -203,9 +203,8 @@
    * Success handler for upload form data
    */
   var successHandler = function () {
-    window.popup.remove();
 
-    window.utils.showSuccessMessage('Заказ отправлен!', function () {
+    var functionList = function () {
       orderForm.reset();
       window.form.disable();
       window.map.disable();
@@ -217,7 +216,29 @@
       window.mainPin.firstClickMainPin();
 
       window.form.defaultValidateFunctions();
-    });
+    };
+
+    var successMessageElement = window.utils.getSuccessMessage('Заказ отправлен!');
+
+    var successMessageMouseHandler = function () {
+      functionList();
+
+      successMessageElement.removeEventListener('click', successMessageMouseHandler);
+      window.removeEventListener('keydown', successMessageKeydownHandler);
+    };
+
+    var successMessageKeydownHandler = function (evt) {
+      window.utils.onEscPress(evt, function () {
+        functionList();
+
+        window.removeEventListener('keydown', successMessageKeydownHandler);
+      });
+    };
+
+    if (successMessageElement) {
+      successMessageElement.addEventListener('click', successMessageMouseHandler);
+      window.addEventListener('keydown', successMessageKeydownHandler);
+    }
   };
 
   /**
@@ -226,14 +247,40 @@
    */
   var errorHandler = function (errorMessage) {
     window.popup.remove();
-    window.utils.showErrorMessage(errorMessage, function () {
+
+    var errorMessageElement = window.utils.getErrorMessage(errorMessage);
+
+    var errorMessageMouseHandler = function () {
       window.utils.removeErrorMessage();
+      window.form.defaultValidateFunctions();
 
       window.mainPin.mainPinClicked = false;
       window.mainPin.firstClickMainPin();
 
-      window.form.defaultValidateFunctions();
-    });
+      errorMessageElement.removeEventListener('click', errorMessageMouseHandler);
+      errorMessageButton.removeEventListener('click', errorMessageMouseHandler);
+      window.removeEventListener('keydown', errorMessageKeydownHandler);
+    };
+
+    var errorMessageKeydownHandler = function (evt) {
+      window.utils.onEscPress(evt, function () {
+        window.utils.removeErrorMessage();
+        window.form.defaultValidateFunctions();
+
+        window.mainPin.mainPinClicked = false;
+        window.mainPin.firstClickMainPin();
+
+        window.removeEventListener('keydown', errorMessageKeydownHandler);
+      });
+    };
+
+    if (errorMessageElement) {
+      var errorMessageButton = errorMessageElement.querySelector('.error__button');
+      errorMessageElement.addEventListener('click', errorMessageMouseHandler);
+      errorMessageButton.addEventListener('click', errorMessageMouseHandler);
+      window.addEventListener('keydown', errorMessageKeydownHandler);
+    }
+
   };
 
   /**
