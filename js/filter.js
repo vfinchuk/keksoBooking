@@ -16,6 +16,8 @@
 
   var filtersForm = document.querySelector('.map__filters');
 
+  var filtersFormSelects = filtersForm.querySelectorAll('select');
+
   var filtersFormFieldset = filtersForm.querySelector('fieldset');
 
 
@@ -130,9 +132,7 @@
       filtersForm.classList.remove('map__filters--disabled');
       filtersFormFieldset.disabled = false;
 
-      var selects = filtersForm.querySelectorAll('select');
-
-      selects.forEach(function (select) {
+      filtersFormSelects.forEach(function (select) {
         select.disabled = false;
       });
     },
@@ -143,9 +143,7 @@
       filtersForm.classList.add('map__filters--disabled');
       filtersFormFieldset.disabled = true;
 
-      var selects = filtersForm.querySelectorAll('select');
-
-      selects.forEach(function (select) {
+      filtersFormSelects.forEach(function (select) {
         select.disabled = true;
       });
     },

@@ -28,8 +28,11 @@
       listItem.classList.add('popup__feature', 'popup__feature--' + feature);
       fragmentFeatures.appendChild(listItem);
     });
-    template.querySelector('.popup__features').innerHTML = '';
-    template.querySelector('.popup__features').appendChild(fragmentFeatures);
+
+    var featuresElement = template.querySelector('.popup__features');
+
+    featuresElement.innerHTML = '';
+    featuresElement.appendChild(fragmentFeatures);
 
     template.querySelector('.popup__description').textContent = offer.description;
 
@@ -44,8 +47,11 @@
       image.alt = 'Фотография жилья';
       fragmentPhotos.appendChild(image);
     });
-    template.querySelector('.popup__photos').innerHTML = '';
-    template.querySelector('.popup__photos').appendChild(fragmentPhotos);
+
+    var photosElement = template.querySelector('.popup__photos');
+
+    photosElement.innerHTML = '';
+    photosElement.appendChild(fragmentPhotos);
 
     return template;
   };

@@ -15,8 +15,9 @@
   var getPinTemplate = function (data) {
     var template = pinTemplate.cloneNode(true);
 
-    template.querySelector('img').src = data.author.avatar;
-    template.querySelector('img').alt = data.offer.title;
+    var image = template.querySelector('img');
+    image.src = data.author.avatar;
+    image.alt = data.offer.title;
 
     template.style.left = (data.location.x - SizePin.WIDTH / 2) + 'px';
     template.style.top = (data.location.y - SizePin.HEIGHT) + 'px';
