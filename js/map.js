@@ -18,7 +18,7 @@
    * @param {string} errorMessage
    */
   var errorHandler = function (errorMessage) {
-    window.utils.errorMessage(errorMessage, function () {
+    window.utils.showErrorMessage(errorMessage, function () {
       window.utils.removeErrorMessage();
       window.data.download(successHandler, errorHandler);
     });

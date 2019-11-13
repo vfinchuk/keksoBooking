@@ -12,7 +12,7 @@
     SUCCESS_STATUS: 200,
     TIMEOUT: 5000,
 
-    ERROR_MASSAGE: {
+    ERROR_MESSAGE: {
       LOAD: 'статус ответа:',
       ERROR: 'ошибка соединения',
       TIMEOUT: 'запрос не успел выполнится за'
@@ -33,16 +33,16 @@
       if (xhr.status === XhrConfig.SUCCESS_STATUS) {
         onSuccess(xhr.response);
       } else {
-        onError(XhrConfig.ERROR_MASSAGE.LOAD + ' ' + xhr.status + ' ' + xhr.statusText);
+        onError(XhrConfig.ERROR_MESSAGE.LOAD + ' ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError(XhrConfig.ERROR_MASSAGE.ERROR);
+      onError(XhrConfig.ERROR_MESSAGE.ERROR);
     });
 
     xhr.addEventListener('timeout', function () {
-      onError(XhrConfig.ERROR_MASSAGE.TIMEOUT + ' ' + (xhr.timeout / 1000) + ' с');
+      onError(XhrConfig.ERROR_MESSAGE.TIMEOUT + ' ' + (xhr.timeout / 1000) + ' с');
     });
 
     xhr.timeout = XhrConfig.TIMEOUT;

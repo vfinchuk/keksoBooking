@@ -1,8 +1,8 @@
 'use strict';
 (function () {
 
-  var errorMassageTemplateElement = document.querySelector('#error').content.querySelector('.error');
-  var successMassageTemplateElement = document.querySelector('#success').content.querySelector('.success');
+  var errorMessageTemplateElement = document.querySelector('#error').content.querySelector('.error');
+  var successMessageTemplateElement = document.querySelector('#success').content.querySelector('.success');
   var mainElement = document.querySelector('main');
 
   var ButtonKey = {
@@ -51,8 +51,8 @@
       };
     },
 
-    errorMessage: function (message, errorButtonHandler) {
-      var template = errorMassageTemplateElement.cloneNode(true);
+    showErrorMessage: function (message, errorMessageCb) {
+      var template = errorMessageTemplateElement.cloneNode(true);
       template.querySelector('.error__message').textContent = message;
 
       mainElement.insertAdjacentElement('afterbegin', template);
@@ -61,13 +61,13 @@
 
       errorButton.addEventListener('click', function (evt) {
         evt.stopPropagation();
-        errorButtonHandler();
-        errorButton.removeEventListener('click', errorButtonHandler);
+        errorMessageCb();
+        errorButton.removeEventListener('click', errorMessageCb);
       }, {once: true});
 
       document.addEventListener('keydown', function (evt) {
         window.utils.onEscPress(evt, function () {
-          errorButtonHandler();
+          errorMessageCb();
         });
       }, {once: true});
 
@@ -75,13 +75,13 @@
       var errorElement = document.querySelector('.error');
       errorElement.addEventListener('click', function (evt) {
         evt.preventDefault();
-        errorButtonHandler();
-        errorElement.removeEventListener('click', errorButtonHandler);
+        errorMessageCb();
+        errorElement.removeEventListener('click', errorMessageCb);
       }, {once: true});
     },
 
-    successMessage: function (message, successHandler) {
-      var template = successMassageTemplateElement.cloneNode(true);
+    showSuccessMessage: function (message, successHandler) {
+      var template = successMessageTemplateElement.cloneNode(true);
 
       template.querySelector('.success__message').textContent = message;
       mainElement.insertAdjacentElement('afterbegin', template);

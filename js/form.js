@@ -2,7 +2,7 @@
 
 (function () {
 
-  var DEFAULT_AVATAR_IMG = 'img/muffin-grey.svg';
+  var DEFAULT_AVATAR_IMAGE = 'img/muffin-grey.svg';
 
   var MAX_GUESTS_AMOUNT = 100;
   var MAX_PRICE = 1000000;
@@ -35,7 +35,7 @@
   var checkOut = orderForm.querySelector('#timeout');
 
   var avatar = orderForm.querySelector('#avatar');
-  var previewImg = orderForm.querySelector('.ad-form-header__preview img');
+  var previewImage = orderForm.querySelector('.ad-form-header__preview img');
 
   var images = orderForm.querySelector('#images');
 
@@ -130,7 +130,7 @@
         callback(evt);
       };
       reader.onerror = function () {
-        window.utils.errorMessage('Произошла ошибка загрузки', false);
+        window.utils.showErrorMessage('Произошла ошибка загрузки', false);
         return false;
       };
     }
@@ -141,7 +141,7 @@
   avatar.addEventListener('change', function (evt) {
     var file = evt.target.files[0];
     readFile(file, function (evtFile) {
-      previewImg.src = evtFile.target.result;
+      previewImage.src = evtFile.target.result;
     });
   });
 
@@ -205,7 +205,7 @@
   var successHandler = function () {
     window.popup.remove();
 
-    window.utils.successMessage('Заказ отправлен!', function () {
+    window.utils.showSuccessMessage('Заказ отправлен!', function () {
       orderForm.reset();
       window.form.disable();
       window.map.disable();
@@ -214,7 +214,7 @@
       window.utils.removeSuccessMessage();
 
       window.mainPin.mainPinClicked = false;
-      window.mainPin.firsClickMainPin();
+      window.mainPin.firstClickMainPin();
 
       window.form.defaultValidateFunctions();
     });
@@ -222,15 +222,15 @@
 
   /**
    * Error handler for upload form data
-   * @param {string} errorMassage
+   * @param {string} errorMessage
    */
-  var errorHandler = function (errorMassage) {
+  var errorHandler = function (errorMessage) {
     window.popup.remove();
-    window.utils.errorMessage(errorMassage, function () {
+    window.utils.showErrorMessage(errorMessage, function () {
       window.utils.removeErrorMessage();
 
       window.mainPin.mainPinClicked = false;
-      window.mainPin.firsClickMainPin();
+      window.mainPin.firstClickMainPin();
 
       window.form.defaultValidateFunctions();
     });
@@ -287,7 +287,7 @@
         photo.remove();
       });
 
-      previewImg.src = DEFAULT_AVATAR_IMG;
+      previewImage.src = DEFAULT_AVATAR_IMAGE;
     }
   };
 

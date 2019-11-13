@@ -88,7 +88,7 @@
   window.mainPin = {
     mainPinClicked: false,
 
-    firsClickMainPin: function () {
+    firstClickMainPin: function () {
       var mainPinClickHandler = function () {
         window.map.init();
         window.mainPin.setAddressCoordinate();
@@ -136,7 +136,7 @@
     }
   };
 
-  window.mainPin.firsClickMainPin();
+  window.mainPin.firstClickMainPin();
   window.mainPin.setAddressCoordinate(true);
 
 })();
