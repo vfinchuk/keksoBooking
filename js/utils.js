@@ -78,11 +78,10 @@
     },
 
     removeSuccessMessage: function () {
-      var successElement = document.querySelector('.success');
+      var successElement = mainElement.querySelector('.success');
       if (successElement) {
         successElement.remove();
       }
     }
   };
-
 })();

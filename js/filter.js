@@ -98,11 +98,27 @@
   };
 
   /**
+   * filtered pins
+   */
+  var filterPins = function () {
+    var pins = pinsData.filter(function (pin) {
+      return (
+        checkHousingType(pin) &&
+        checkHousingRooms(pin) &&
+        checkHousingGuests(pin) &&
+        checkHousingPrice(pin) &&
+        checkHousingFeatures(pin)
+      );
+    });
+    window.pins.render(pins);
+  };
+
+  /**
    * Filter form event listener
    */
 
   var filtersFormChangeHandler = function () {
-    window.filter.filterPinsHandler();
+    filterPins();
   };
 
   filtersForm.addEventListener('change', window.utils.debounce(filtersFormChangeHandler));
@@ -110,7 +126,7 @@
   /* Filter form event listener */
   var filtersFormEnterKeyHandler = function (evt) {
     window.utils.onEnterPress(evt, function () {
-      filtersFormChangeHandler();
+      filterPins();
     });
   };
 
@@ -149,21 +165,6 @@
       filtersFormSelects.forEach(function (select) {
         select.disabled = true;
       });
-    },
-    /**
-     * filtered pins handler
-     */
-    filterPinsHandler: function () {
-      var filterPins = pinsData.filter(function (pin) {
-        return (
-          checkHousingType(pin) &&
-          checkHousingRooms(pin) &&
-          checkHousingGuests(pin) &&
-          checkHousingPrice(pin) &&
-          checkHousingFeatures(pin)
-        );
-      });
-      window.pins.render(filterPins);
     }
   };
 

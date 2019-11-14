@@ -83,8 +83,6 @@
 
 
   window.mainPin = {
-    mainPinClicked: false,
-
     firstClickMainPin: function () {
 
       var mainPinClickHandler = function () {
