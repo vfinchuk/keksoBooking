@@ -82,34 +82,31 @@
   });
 
 
-  // TODO Доработать !!!
-
-
   window.mainPin = {
     mainPinClicked: false,
 
     firstClickMainPin: function () {
+
       var mainPinClickHandler = function () {
         window.map.init();
         window.mainPin.setAddressCoordinate();
+
+        mainPin.removeEventListener('mousedown', mainPinClickHandler);
+        mainPin.removeEventListener('keydown', mainPinKeydownHandler);
       };
 
-      mainPin.addEventListener('mousedown', function () {
-        if (!window.mainPin.mainPinClicked) {
-          mainPinClickHandler();
-          window.mainPin.mainPinClicked = true;
-        }
-      }, {once: true});
-
-      mainPin.addEventListener('keydown', function (evt) {
+      var mainPinKeydownHandler = function (evt) {
         window.utils.onEnterPress(evt, function () {
-          if (!window.mainPin.mainPinClicked) {
-            mainPinClickHandler();
-            window.mainPin.mainPinClicked = true;
-          }
-        });
-      }, {once: true});
+          window.map.init();
+          window.mainPin.setAddressCoordinate();
 
+          mainPin.removeEventListener('mousedown', mainPinClickHandler);
+          mainPin.removeEventListener('keydown', mainPinKeydownHandler);
+        });
+      };
+
+      mainPin.addEventListener('mousedown', mainPinClickHandler);
+      mainPin.addEventListener('keydown', mainPinKeydownHandler);
     },
     /**
      * set default coordinate for main map pin

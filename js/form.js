@@ -187,7 +187,7 @@
     window.mainPin.setDefault();
     window.mainPin.setAddressCoordinate(true);
 
-    resetButton.removeEventListener('click', resetButtonHandler);
+    window.mainPin.firstClickMainPin();
   };
 
   avatar.addEventListener('change', avatarChangeHandler);
@@ -220,7 +220,6 @@
     window.form.disable();
     window.mainPin.setAddressCoordinate(true);
 
-    window.mainPin.mainPinClicked = false;
     window.mainPin.firstClickMainPin();
     window.form.defaultValidateFunctions();
 
@@ -261,7 +260,6 @@
       window.utils.removeErrorMessage();
       window.form.defaultValidateFunctions();
 
-      window.mainPin.mainPinClicked = false;
       window.mainPin.firstClickMainPin();
 
       errorMessageElement.removeEventListener('click', errorMessageMouseHandler);
@@ -274,7 +272,6 @@
         window.utils.removeErrorMessage();
         window.form.defaultValidateFunctions();
 
-        window.mainPin.mainPinClicked = false;
         window.mainPin.firstClickMainPin();
 
         window.removeEventListener('keydown', errorMessageKeydownHandler);
