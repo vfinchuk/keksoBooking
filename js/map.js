@@ -11,6 +11,7 @@
   var successHandler = function (data) {
     window.filter.copyData(data);
     window.pins.render(data);
+    window.filter.enable();
   };
 
   /**
@@ -54,7 +55,6 @@
     enable: function () {
       window.map.isActive = true;
       map.classList.remove('map--faded');
-      window.filter.enable();
     },
     /**
      * Disable map
