@@ -100,18 +100,23 @@
   /**
    * Filter form event listener
    */
-  filtersForm.addEventListener('change', window.utils.debounce(function () {
+
+  var filtersFormChangeHandler = function () {
     window.filter.filterPinsHandler();
-  }));
+  };
+
+  filtersForm.addEventListener('change', window.utils.debounce(filtersFormChangeHandler));
 
   /**
    * Filter form event listener
    */
-  filtersForm.addEventListener('keydown', function (evt) {
+  var filtersFormEnterKeyHandler = function (evt) {
     window.utils.onEnterPress(evt, function () {
-      window.filter.filterPinsHandler();
+      filtersFormChangeHandler();
     });
-  });
+  };
+
+  filtersForm.addEventListener('keydown', filtersFormEnterKeyHandler);
 
 
   window.filter = {

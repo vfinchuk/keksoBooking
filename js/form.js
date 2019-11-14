@@ -65,6 +65,8 @@
     var minValue = parseInt(price.getAttribute('min'), 10);
     var value = parseInt(price.value, 10);
 
+    price.setAttribute('placeholder', PriceByHousingType[housingType.options[housingType.selectedIndex].value]);
+
     if (price.value === '') {
       price.setCustomValidity('Введите цену за ночь');
     } else if (value < minValue) {
@@ -136,45 +138,37 @@
     }
   };
 
+  /* event handlers */
 
-  /* Event listener for avatar file input */
-  avatar.addEventListener('change', function (evt) {
+  var avatarChangeHandler = function (evt) {
     var file = evt.target.files[0];
     readFile(file, function (evtFile) {
       previewImage.src = evtFile.target.result;
     });
-  });
+  };
 
-  /* Validate title input event listener */
-  title.addEventListener('input', window.utils.debounce(validateTitle));
+  var validateTitleHandler = function () {
+    validateTitle();
+  };
 
-  /* Validate price input event listener */
-  price.addEventListener('input', window.utils.debounce(validatePrice));
+  var validatePriceHandler = function () {
+    validatePrice();
+  };
 
-  /* Validate house type event listener */
-  housingType.addEventListener('change', function (evt) {
+  var housingTypeChangeHandler = function (evt) {
     price.setAttribute('min', PriceByHousingType[evt.target.value]);
     price.setAttribute('placeholder', PriceByHousingType[evt.target.value]);
-  });
+  };
 
-  /* Validate rooms event listener */
-  rooms.addEventListener('change', validateRoomsAndCapacity);
+  var validateRoomsAndCapacityHandler = function () {
+    validateRoomsAndCapacity();
+  };
 
-  /* Validate capacity event listener */
-  capacity.addEventListener('change', validateRoomsAndCapacity);
-
-  /* Validate checkIn event listener */
-  checkIn.addEventListener('change', function (evt) {
+  var checkInOutHandler = function (evt) {
     setCheckInAndOut(evt.target.value);
-  });
+  };
 
-  /* Validate checkOut event listener */
-  checkOut.addEventListener('change', function (evt) {
-    setCheckInAndOut(evt.target.value);
-  });
-
-  /* Add images event listener */
-  images.addEventListener('change', function (evt) {
+  var imagesChangeHandler = function (evt) {
     var files = evt.target.files;
 
     Array.from(files).forEach(function (file) {
@@ -182,46 +176,59 @@
         renderPhoto(evtFile.target.result);
       });
     });
-  });
+  };
+
+  var resetButtonHandler = function () {
+    orderForm.reset();
+    window.popup.remove();
+    window.form.disable();
+    window.filter.reset();
+    window.map.disable();
+    window.mainPin.setDefault();
+    window.mainPin.setAddressCoordinate(true);
+
+    resetButton.removeEventListener('click', resetButtonHandler);
+  };
+
+  avatar.addEventListener('change', avatarChangeHandler);
+
+  title.addEventListener('input', window.utils.debounce(validateTitleHandler));
+
+  price.addEventListener('input', window.utils.debounce(validatePriceHandler));
+
+  housingType.addEventListener('change', housingTypeChangeHandler);
+
+  rooms.addEventListener('change', validateRoomsAndCapacityHandler);
+
+  capacity.addEventListener('change', validateRoomsAndCapacityHandler);
+
+  checkIn.addEventListener('change', checkInOutHandler);
+  checkOut.addEventListener('change', checkInOutHandler);
+
+  images.addEventListener('change', imagesChangeHandler);
 
   /* Reset button event listener */
-  resetButton.addEventListener('click', function () {
-    var resetButtonHandler = function () {
-      orderForm.reset();
-      window.popup.remove();
-      window.form.disable();
-      window.filter.reset();
-      window.map.disable();
-      window.mainPin.setDefault();
-      window.mainPin.setAddressCoordinate(true);
-    };
-    resetButtonHandler();
-    resetButton.removeEventListener('click', resetButtonHandler);
-  });
+  resetButton.addEventListener('click', resetButtonHandler);
 
   /**
    * Success handler for upload form data
    */
   var successHandler = function () {
+    orderForm.reset();
+    window.filter.reset();
+    window.map.disable();
+    window.form.disable();
+    window.mainPin.setAddressCoordinate(true);
 
-    var functionList = function () {
-      orderForm.reset();
-      window.form.disable();
-      window.map.disable();
-      window.mainPin.setDefault();
-      window.mainPin.setAddressCoordinate(true);
-      window.utils.removeSuccessMessage();
+    window.mainPin.mainPinClicked = false;
+    window.mainPin.firstClickMainPin();
+    window.form.defaultValidateFunctions();
 
-      window.mainPin.mainPinClicked = false;
-      window.mainPin.firstClickMainPin();
-
-      window.form.defaultValidateFunctions();
-    };
 
     var successMessageElement = window.utils.getSuccessMessage('Заказ отправлен!');
 
     var successMessageMouseHandler = function () {
-      functionList();
+      window.utils.removeSuccessMessage();
 
       successMessageElement.removeEventListener('click', successMessageMouseHandler);
       window.removeEventListener('keydown', successMessageKeydownHandler);
@@ -229,7 +236,7 @@
 
     var successMessageKeydownHandler = function (evt) {
       window.utils.onEscPress(evt, function () {
-        functionList();
+        window.utils.removeSuccessMessage();
 
         window.removeEventListener('keydown', successMessageKeydownHandler);
       });
@@ -283,13 +290,12 @@
 
   };
 
-  /**
-   * Submit form event listener
-   */
-  orderForm.addEventListener('submit', function (evt) {
+  var orderFormSubmitHandler = function (evt) {
     evt.preventDefault();
     window.data.upload(new FormData(orderForm), successHandler, errorHandler);
-  });
+  };
+
+  orderForm.addEventListener('submit', orderFormSubmitHandler);
 
 
   window.form = {
