@@ -107,9 +107,7 @@
 
   filtersForm.addEventListener('change', window.utils.debounce(filtersFormChangeHandler));
 
-  /**
-   * Filter form event listener
-   */
+  /* Filter form event listener */
   var filtersFormEnterKeyHandler = function (evt) {
     window.utils.onEnterPress(evt, function () {
       filtersFormChangeHandler();
