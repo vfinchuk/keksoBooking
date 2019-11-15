@@ -230,20 +230,20 @@
       window.utils.removeSuccessMessage();
 
       successMessageElement.removeEventListener('click', successMessageMouseHandler);
-      window.removeEventListener('keydown', successMessageKeydownHandler);
+      window.removeEventListener('keydown', successMessageKeyDownHandler);
     };
 
-    var successMessageKeydownHandler = function (evt) {
+    var successMessageKeyDownHandler = function (evt) {
       window.utils.escPressHandler(evt, function () {
         window.utils.removeSuccessMessage();
 
-        window.removeEventListener('keydown', successMessageKeydownHandler);
+        window.removeEventListener('keydown', successMessageKeyDownHandler);
       });
     };
 
     if (successMessageElement) {
       successMessageElement.addEventListener('click', successMessageMouseHandler);
-      window.addEventListener('keydown', successMessageKeydownHandler);
+      window.addEventListener('keydown', successMessageKeyDownHandler);
     }
   };
 
@@ -264,17 +264,17 @@
 
       errorMessageElement.removeEventListener('click', errorMessageMouseHandler);
       errorMessageButton.removeEventListener('click', errorMessageMouseHandler);
-      window.removeEventListener('keydown', errorMessageKeydownHandler);
+      window.removeEventListener('keydown', errorMessageKeyDownHandler);
     };
 
-    var errorMessageKeydownHandler = function (evt) {
+    var errorMessageKeyDownHandler = function (evt) {
       window.utils.escPressHandler(evt, function () {
         window.utils.removeErrorMessage();
         window.form.defaultValidateFunctions();
 
         window.mainPin.firstClickMainPin();
 
-        window.removeEventListener('keydown', errorMessageKeydownHandler);
+        window.removeEventListener('keydown', errorMessageKeyDownHandler);
       });
     };
 
@@ -282,7 +282,7 @@
       var errorMessageButton = errorMessageElement.querySelector('.error__button');
       errorMessageElement.addEventListener('click', errorMessageMouseHandler);
       errorMessageButton.addEventListener('click', errorMessageMouseHandler);
-      window.addEventListener('keydown', errorMessageKeydownHandler);
+      window.addEventListener('keydown', errorMessageKeyDownHandler);
     }
 
   };

@@ -100,7 +100,7 @@
   /**
    * filtered pins
    */
-  var renderfilteredPins = function () {
+  var renderFilteredPins = function () {
     var pins = pinsData.filter(function (pin) {
       return (
         checkHousingType(pin) &&
@@ -118,7 +118,7 @@
    */
 
   var filtersFormChangeHandler = function () {
-    renderfilteredPins();
+    renderFilteredPins();
   };
 
   filtersForm.addEventListener('change', window.utils.debounce(filtersFormChangeHandler));
@@ -126,7 +126,7 @@
   /* Filter form event listener */
   var filtersFormEnterKeyHandler = function (evt) {
     window.utils.enterPressHandler(evt, function () {
-      renderfilteredPins();
+      renderFilteredPins();
     });
   };
 

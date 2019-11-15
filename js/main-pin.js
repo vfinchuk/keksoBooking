@@ -90,21 +90,21 @@
         window.mainPin.setAddressCoordinate();
 
         mainPin.removeEventListener('mousedown', mainPinClickHandler);
-        mainPin.removeEventListener('keydown', mainPinKeydownHandler);
+        mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
       };
 
-      var mainPinKeydownHandler = function (evt) {
+      var mainPinKeyDownHandler = function (evt) {
         window.utils.enterPressHandler(evt, function () {
           window.map.init();
           window.mainPin.setAddressCoordinate();
 
           mainPin.removeEventListener('mousedown', mainPinClickHandler);
-          mainPin.removeEventListener('keydown', mainPinKeydownHandler);
+          mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
         });
       };
 
       mainPin.addEventListener('mousedown', mainPinClickHandler);
-      mainPin.addEventListener('keydown', mainPinKeydownHandler);
+      mainPin.addEventListener('keydown', mainPinKeyDownHandler);
     },
     /**
      * set default coordinate for main map pin

@@ -27,15 +27,15 @@
 
       errorMessageElement.removeEventListener('click', errorMessageMouseHandler);
       errorMessageButton.removeEventListener('click', errorMessageMouseHandler);
-      window.removeEventListener('keydown', errorMessageKeydownHandler);
+      window.removeEventListener('keydown', errorMessageKeyDownHandler);
     };
 
-    var errorMessageKeydownHandler = function (evt) {
+    var errorMessageKeyDownHandler = function (evt) {
       window.utils.escPressHandler(evt, function () {
         window.utils.removeErrorMessage();
         window.data.download(successHandler, errorHandler);
 
-        window.removeEventListener('keydown', errorMessageKeydownHandler);
+        window.removeEventListener('keydown', errorMessageKeyDownHandler);
       });
     };
 
@@ -43,7 +43,7 @@
       var errorMessageButton = errorMessageElement.querySelector('.error__button');
       errorMessageElement.addEventListener('click', errorMessageMouseHandler);
       errorMessageButton.addEventListener('click', errorMessageMouseHandler);
-      window.addEventListener('keydown', errorMessageKeydownHandler);
+      window.addEventListener('keydown', errorMessageKeyDownHandler);
     }
   };
 
