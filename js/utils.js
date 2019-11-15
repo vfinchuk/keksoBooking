@@ -25,13 +25,13 @@
       };
     },
 
-    onEnterPress: function (evt, action) {
+    enterPressHandler: function (evt, action) {
       if (evt.keyCode === ButtonKey.ENTER) {
         action();
       }
     },
 
-    onEscPress: function (evt, action) {
+    escPressHandler: function (evt, action) {
       if (evt.keyCode === ButtonKey.ESC) {
         action();
       }

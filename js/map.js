@@ -31,7 +31,7 @@
     };
 
     var errorMessageKeydownHandler = function (evt) {
-      window.utils.onEscPress(evt, function () {
+      window.utils.escPressHandler(evt, function () {
         window.utils.removeErrorMessage();
         window.data.download(successHandler, errorHandler);
 

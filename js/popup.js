@@ -71,10 +71,7 @@
 
 
   var openPopup = function (data) {
-    var card = document.querySelector('.popup');
-    if (card) {
-      card.remove();
-    }
+    window.popup.remove();
 
     var template = getCardTemplate(data);
     insertCardTemplate(template);
@@ -84,24 +81,23 @@
 
 
   var escPressPopupHandler = function (evt) {
-    window.utils.onEscPress(evt, window.popup.remove);
+    window.utils.escPressHandler(evt, window.popup.remove);
     document.removeEventListener('keydown', escPressPopupHandler);
   };
 
 
   window.popup = {
-    openHandler: function (pin, data) {
+    open: function (pin, data) {
 
       pin.addEventListener('click', function () {
         openPopup(data);
       });
 
       pin.addEventListener('keydown', function (evt) {
-        window.utils.onEscPress(evt, function () {
+        window.utils.escPressHandler(evt, function () {
           openPopup(data);
         });
       });
-
     },
 
     remove: function () {

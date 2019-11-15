@@ -234,7 +234,7 @@
     };
 
     var successMessageKeydownHandler = function (evt) {
-      window.utils.onEscPress(evt, function () {
+      window.utils.escPressHandler(evt, function () {
         window.utils.removeSuccessMessage();
 
         window.removeEventListener('keydown', successMessageKeydownHandler);
@@ -268,7 +268,7 @@
     };
 
     var errorMessageKeydownHandler = function (evt) {
-      window.utils.onEscPress(evt, function () {
+      window.utils.escPressHandler(evt, function () {
         window.utils.removeErrorMessage();
         window.form.defaultValidateFunctions();
 

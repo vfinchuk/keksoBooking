@@ -42,7 +42,7 @@
       var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
       pins.forEach(function (pin, index) {
-        window.popup.openHandler(pin, data[index]);
+        window.popup.open(pin, data[index]);
       });
     },
 

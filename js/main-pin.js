@@ -94,7 +94,7 @@
       };
 
       var mainPinKeydownHandler = function (evt) {
-        window.utils.onEnterPress(evt, function () {
+        window.utils.enterPressHandler(evt, function () {
           window.map.init();
           window.mainPin.setAddressCoordinate();
 

@@ -125,7 +125,7 @@
 
   /* Filter form event listener */
   var filtersFormEnterKeyHandler = function (evt) {
-    window.utils.onEnterPress(evt, function () {
+    window.utils.enterPressHandler(evt, function () {
       renderfilteredPins();
     });
   };
